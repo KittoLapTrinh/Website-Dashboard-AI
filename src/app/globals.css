@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.bg-dotted-line {
+  background-image: linear-gradient(to bottom, #6b7280 60%, transparent 40%);
+  background-size: 1px 8px;
+}
+
+.p-4{
+  background-color: #000000;
+}
+
+
+
+
+/* Thêm vào cuối file */
+.bg-dashed-horizontal {
+  background-image: linear-gradient(to right, #4b5563 60%, transparent 40%);
+  background-size: 8px 1px; /* Mỗi đoạn dài 8px, cao 1px */
+}
+
+/* Thêm vào cuối file */
+
+.tooltip-with-tail {
+  @apply relative;
+}
+
+
+.bg-zinc-800.p-4.flex.items-center.gap-x-4.flex-row-reverse{
+  background-color: var(--color-zinc-800)!important;
+  @apply rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-[70px]
+}
+
+.text-blue-500{
+  color: #8ABFEF!important;
+}
+
+/*Chat bot*/
+
+/* .relative.aspect-square.max-w-md.mx-auto .object-contain.z-10{
+  position: relative!important;
+}
+
+ .chat-bubble-bot {
+  @apply relative bg-zinc-800 p-4 rounded-xl;
+}
+
+.chat-bubble-user {
+  @apply relative bg-zinc-800 p-3 rounded-xl self-end;
+} */
+ /* Bong bóng chat của bot, đuôi bên trái */
+.chat-bubble-bot {
+  @apply relative bg-zinc-800 p-4 rounded-xl;
+}
+.chat-bubble-bot::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #27272a; /* Màu bg-zinc-800 */
+}
+
+/* Bong bóng chat của người dùng, đuôi bên phải */
+.chat-bubble-user {
+  @apply relative bg-zinc-800 p-3 rounded-lg;
+}
+.chat-bubble-user::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-left-color: #27272a; /* Màu bg-zinc-800 */
+}
+
+/* Support Found*/
+.bg-dashed-horizontal {
+  background-image: linear-gradient(to right, #4b5563 60%, transparent 40%);
+  background-size: 8px 1px; /* Mỗi đoạn dài 8px, cao 1px */
+}
+
+
+/* Total View*/
+.p-px.rounded-2xl.bg-gradient-to-br .bg-zinc-900.p-2.h-full.flex.flex-col.justify-between{
+  padding: calc(var(--spacing) * 4);
+}
+
+.text-white.font-bold.text-sm{
+  @apply text-base;
+}
+
+.text-red-400{
+  @apply text-red-500;
+}
+
+.bg-zinc-900 .text-green-400{
+  @apply text-green-400
+}
+
+/* Total View*/
+.flex.items-center.gap-x-2 .text-sm.rounded-full{
+ @apply border-[#FFFFFF] ;
+}
+
+svg[tabindex] {
+  outline: none !important;
+}
+
+/* Real-time recruiting */
+/* .flex.items-center.gap-x-3.text-white.text-sm svg{
+  color: #484A52;
+} */
+
+/* .text-xs.text-white.font-semibold.flex.items-center.gap-1.cursor-pointer svg.lucide.lucide-arrow-up-down{
+  display: none;
+} */
+
+/* Heart beat Monitor*/
+.bg-zinc-900.p-4.h-full.flex.flex-col{
+  @apply bg-[#18181B];
+}
+
+/* Customer Reaction*/
+/* .flex.items-center.gap-x-5.false{
+  @apply rounded-[25%]
+} */
+
+.bg-zinc-800.p-6.relative.rounded-r-2xl{
+  @apply rounded-[25px];
+}
+
+
+
+
