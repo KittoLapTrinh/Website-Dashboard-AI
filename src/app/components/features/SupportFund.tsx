@@ -1,27 +1,53 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 
-const days = ['Mon 20', 'Tue 21', 'Wed 22', 'Thu 23'];
-const fundData = [
-  { name: 'Albufin', price: 26, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-white' },
-  { name: 'Vitamin D', price: 26, icon: <Sun size={18} />, count: 2, avatarColor: 'bg-gray-600' },
-  { name: 'Omega 3', price: 26, icon: <Moon size={18} />, count: 2, avatarColor: 'bg-gray-600' },
-];
+// --- DỮ LIỆU MẪU LỚN HƠN ---
+const allFundData = {
+  'Mon 20': [
+    { name: 'Albufin', price: 26, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-white' },
+    { name: 'Vitamin C', price: 15, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-gray-600' },
+  ],
+  'Tue 21': [
+    { name: 'Vitamin D', price: 26, icon: <Sun size={18} />, count: 2, avatarColor: 'bg-gray-600' },
+    { name: 'Omega 3', price: 26, icon: <Moon size={18} />, count: 2, avatarColor: 'bg-gray-600' },
+    { name: 'Magnesium', price: 20, icon: <Moon size={18} />, count: 1, avatarColor: 'bg-gray-600' },
+  ],
+  'Wed 22': [
+    { name: 'Albufin', price: 26, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-white' },
+    { name: 'Vitamin D', price: 26, icon: <Sun size={18} />, count: 2, avatarColor: 'bg-gray-600' },
+    { name: 'Omega 3', price: 26, icon: <Moon size={18} />, count: 2, avatarColor: 'bg-gray-600' },
+    { name: 'Iron', price: 18, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-gray-600' },
+    { name: 'Zinc', price: 12, icon: <Sun size={18} />, count: 1, avatarColor: 'bg-gray-600' },
+  ],
+  'Thu 23': [
+    { name: 'Omega 3', price: 26, icon: <Moon size={18} />, count: 2, avatarColor: 'bg-gray-600' },
+  ],
+};
+
+const days = Object.keys(allFundData);
 
 const SupportFund = () => {
   const [activeDay, setActiveDay] = useState('Wed 22');
+  
+  // Lọc dữ liệu dựa trên ngày được chọn
+  const displayedData = useMemo(() => {
+    return allFundData[activeDay as keyof typeof allFundData] || [];
+  }, [activeDay]);
+
+  // Mảng class thụt vào
+  const indentationClasses = ['pl-4', 'pl-12', 'pl-20', 'pl-28', 'pl-36'];
 
   return (
     <WidgetCard>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-60">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-white">Support Fund</h2>
+          <h2 className="text-2xl font-bold text-white">Support Fund</h2>
         </div>
-        <div className="flex justify-between items-center text-sm text-gray-400 mb-4">
+        <div className="flex justify-between items-center text-sm text-gray-400 mb-8">
           {days.map((day) => (
             <button key={day} onClick={() => setActiveDay(day)} className={`font-medium transition-colors ${activeDay === day ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>
               {day}
@@ -29,70 +55,25 @@ const SupportFund = () => {
           ))}
         </div>
 
-        {/* Danh sách các mục */}
-        <div className="relative flex-grow min-h-[160px]">
-          
-          {/* === CÁC ĐƯỜNG KẺ === */}
-
-          {/* ✨ Đường kẻ ngang 1 */}
-          <div className="absolute top-[12%] left-6 w-[90%] h-px bg-dashed-horizontal"></div>
-          {/* ✨ Đường kẻ ngang 2 */}
-          <div className="absolute top-1/2 left-6 w-[90%] h-px bg-dashed-horizontal"></div>
-          {/* ✨ Đường kẻ ngang 3 */}
-          <div className="absolute bottom-[13%] left-6 w-[90%] h-px bg-dashed-horizontal"></div>
-
-
-          {/* === CÁC ITEM === */}
-          {/* Item 1 */}
-          <div className="absolute flex items-center">
-      
-            <div className="ml-4 bg-zinc-800 rounded-full p-1 flex items-center gap-x-5 w-[100%] ">
-              <div className={`w-8 h-8 rounded-full ${fundData[0].avatarColor}`}></div>
-              <div>
-                <p className="text-white font-semibold ml-[-20%]">{fundData[0].name}</p>
+        {/* === DANH SÁCH CÁC MỤC (LAYOUT MỚI) === */}
+        {/* ✨ Thêm class để có scroll */}
+        <div className="flex-grow flex flex-col gap-y-4 overflow-y-auto pr-2">
+          {displayedData.map((item, index) => (
+            <div key={item.name} className={`flex items-center gap-x-4 ${indentationClasses[index % indentationClasses.length]}`}>
+              <div className="bg-zinc-800 rounded-full p-2 flex items-center gap-x-3 w-fit">
+                <div className={`w-10 h-10 rounded-full ${item.avatarColor}`}></div>
+                <div>
+                  <p className="text-white font-semibold">{item.name}</p>
+                  <p className="text-gray-500 text-xs font-medium">${item.price}</p>
+                </div>
+                <button className="flex items-center gap-x-2 bg-blue-600 text-white rounded-full px-3 py-1.5 font-medium">
+                  {item.icon}
+                  <span>{item.count}</span>
+                </button>
               </div>
-              <div>
-               
-                <p className="text-gray-500 text-xs font-medium ml-[-110%]">${fundData[0].price}</p>
-              </div>
-              <button className="flex items-center gap-x-3 bg-blue-600 text-white rounded-full px-3 py-1 font-medium">
-                {fundData[0].icon}<span>{fundData[0].count}</span>
-              </button>
+              <div className="flex-grow h-px bg-dashed-horizontal"></div>
             </div>
-          </div>
-
-          {/* Item 2 */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-10 flex items-center">  
-             <div className="ml-4 bg-zinc-800 rounded-full p-1 flex items-center gap-x-5 w-[100%]">
-              <div className={`w-8 h-8 rounded-full ${fundData[1].avatarColor}`}></div>
-              <div>
-                <p className="text-white font-semibold ml-[-20%]">{fundData[1].name}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 text-xs font-medium ml-[-130%]">${fundData[1].price}</p>
-              </div>
-              <button className="flex items-center gap-x-3 bg-blue-600 text-white rounded-full px-3 py-1 font-medium">
-                {fundData[1].icon}<span>{fundData[1].count}</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Item 3 */}
-          <div className="absolute bottom-0 left-25 flex items-center">
-             <div className="ml-4 bg-zinc-800 rounded-full p-1 flex items-center gap-x-5 w-[100%]">
-              <div className={`w-8 h-8 rounded-full ${fundData[2].avatarColor}`}></div>
-              <div>
-                <p className="text-white font-semibold ml-[-20%]">{fundData[2].name}</p>
-              </div>
-              <div>
-                <p className="text-gray-500 text-xs font-medium ml-[-130%]">${fundData[2].price}</p>
-              </div>
-              <button className="flex items-center gap-x-3 bg-blue-600 text-white rounded-full px-3 py-1 font-medium">
-                {fundData[2].icon}<span>{fundData[2].count}</span>
-              </button>
-            </div>
-          </div>
-          
+          ))}
         </div>
       </div>
     </WidgetCard>

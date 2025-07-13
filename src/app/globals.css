@@ -90,8 +90,24 @@ body {
 }
 
 /* Bong bóng chat của người dùng, đuôi bên phải */
+/* Bong bóng chat của bot, đuôi bên trái */
+.chat-bubble-bot {
+  @apply relative bg-zinc-800 p-4 rounded-xl;
+}
+.chat-bubble-bot::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: #27272a;
+}
+
+/* Bong bóng chat của người dùng, đuôi bên phải */
 .chat-bubble-user {
-  @apply relative bg-zinc-800 p-3 rounded-lg;
+  @apply relative bg-blue-600 p-3 rounded-xl; /* Thay đổi màu nền cho user */
 }
 .chat-bubble-user::after {
   content: '';
@@ -101,7 +117,7 @@ body {
   width: 0;
   height: 0;
   border: 8px solid transparent;
-  border-left-color: #27272a; /* Màu bg-zinc-800 */
+  border-left-color: #2563eb; /* Màu của bg-blue-600 */
 }
 
 /* Support Found*/
@@ -160,6 +176,36 @@ svg[tabindex] {
   @apply rounded-[25px];
 }
 
+/* Thêm vào cuối file globals.css */
 
+/* Tùy chỉnh thanh cuộn cho các trình duyệt Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px; /* Độ rộng của thanh cuộn */
+}
 
+::-webkit-scrollbar-track {
+  background: transparent; /* Nền của rãnh cuộn, để trong suốt */
+}
 
+::-webkit-scrollbar-thumb {
+  background-color: #4b5563; /* Màu của con trượt */
+  border-radius: 10px; /* Bo tròn các góc của con trượt */
+  border: 2px solid transparent; /* Tạo khoảng trống xung quanh con trượt */
+  background-clip: content-box; /* Đảm bảo border trong suốt không bị nền che */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280; /* Màu của con trượt khi di chuột vào */
+}
+
+/* Tùy chỉnh thanh cuộn cho Firefox */
+* {
+  scrollbar-width: thin; /* Làm cho thanh cuộn mỏng hơn */
+  scrollbar-color: #4b5563 transparent; /* Màu con trượt và màu rãnh */
+}
+
+/* Support Fund*/
+.bg-dashed-horizontal {
+  background-image: linear-gradient(to right, #4b5563 60%, transparent 40%);
+  background-size: 8px 1px;
+}

@@ -5,14 +5,46 @@ import { ChevronDown, TrendingUp } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 
 // Dữ liệu mẫu cho biểu đồ
-const data = [
-  { name: 'Jan', uv: 40 }, { name: 'Feb', uv: 30 },
-  { name: 'Mar', uv: 60 }, { name: 'Apr', uv: 50 },
-  { name: 'May', uv: 90 }, { name: 'Jun', uv: 40 },
-  { name: 'Jul', uv: 55 }, { name: 'Aug', uv: 80 },
-  { name: 'Sep', uv: 30 }, { name: 'Oct', uv: 50 },
-  { name: 'Nov', uv: 20 }, { name: 'Dec', uv: 40 },
-];
+// const data = [
+//   { name: 'Jan', uv: 40 }, { name: 'Feb', uv: 30 },
+//   { name: 'Mar', uv: 60 }, { name: 'Apr', uv: 50 },
+//   { name: 'May', uv: 90 }, { name: 'Jun', uv: 40 },
+//   { name: 'Jul', uv: 55 }, { name: 'Aug', uv: 80 },
+//   { name: 'Sep', uv: 30 }, { name: 'Oct', uv: 50 },
+//   { name: 'Nov', uv: 20 }, { name: 'Dec', uv: 40 },
+// ];
+
+const generateChartData = (timeframe: 'Weekly' | 'Monthly' | 'Yearly') => {
+  const data = [];
+  const now = new Date();
+  let numPoints;
+  let pointInterval: 'day' | 'month' = 'day';
+  
+  switch (timeframe) {
+    case 'Weekly': numPoints = 7; pointInterval = 'day'; break;
+    case 'Monthly': numPoints = 30; pointInterval = 'day'; break;
+    case 'Yearly': numPoints = 12; pointInterval = 'month'; break;
+    default: numPoints = 7;
+  }
+
+  let lastValue = 80;
+  for (let i = numPoints - 1; i >= 0; i--) {
+    const date = new Date(now);
+    if (pointInterval === 'day') date.setDate(now.getDate() - i);
+    if (pointInterval === 'month') date.setMonth(now.getMonth() - i);
+
+    const change = (Math.random() - 0.45) * 10;
+    lastValue = Math.max(20, Math.min(100, lastValue + change));
+    
+    let dateLabel = date.toLocaleDateString('en-US', { weekday: 'short' });
+    if (timeframe === 'Monthly') dateLabel = date.toLocaleDateString('en-US', { day: 'numeric' });
+    if (timeframe === 'Yearly') dateLabel = date.toLocaleDateString('en-US', { month: 'short' });
+
+    data.push({ name: dateLabel, uv: Math.round(lastValue) });
+  }
+  return data;
+};
+
 
 // Component Tooltip tùy chỉnh để có vị trí chính xác
 const CustomTooltip = ({ active, payload }: any) => {
@@ -44,9 +76,14 @@ const CustomActiveDot = (props: any) => {
 
 const AnalyticsChart = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('Weekly');
-  const filters = ['Weekly', 'Monthly', 'Yearly'];
+  const [activeFilter, setActiveFilter] = useState<'Weekly' | 'Monthly' | 'Yearly'>('Weekly');
+  const filters: ('Weekly' | 'Monthly' | 'Yearly')[] = ['Weekly', 'Monthly', 'Yearly'];
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+   const [chartData, setChartData] = useState(() => generateChartData('Weekly'));
+  useEffect(() => {
+    setChartData(generateChartData(activeFilter));
+  }, [activeFilter]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,17 +95,17 @@ const AnalyticsChart = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
 
-  const [chartData, setChartData] = useState<any>(null);
-  const handleMouseMove = (state: any) => {
-    if (state.isTooltipActive && state.activePayload?.length) {
-      setChartData({ payload: state.activePayload, coordinate: state.activeCoordinate });
-    } else {
-      setChartData(null);
-    }
-  };
-  const handleMouseLeave = () => {
-    setChartData(null);
-  };
+  // const [chartData, setChartData] = useState<any>(null);
+  // const handleMouseMove = (state: any) => {
+  //   if (state.isTooltipActive && state.activePayload?.length) {
+  //     setChartData({ payload: state.activePayload, coordinate: state.activeCoordinate });
+  //   } else {
+  //     setChartData(null);
+  //   }
+  // };
+  // const handleMouseLeave = () => {
+  //   setChartData(null);
+  // };
 
   return (
     <WidgetCard>
@@ -127,7 +164,7 @@ const AnalyticsChart = () => {
         <div className="flex-grow mt-4 h-48">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              data={data}
+              data={chartData}
               margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
             >
               <defs>
