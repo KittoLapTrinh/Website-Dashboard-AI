@@ -1,44 +1,36 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronDown, TrendingUp } from 'lucide-react';
+import { ChevronDown, TrendingUp, TrendingDown } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 import Image, { StaticImageData } from 'next/image';
-
+import { type TotalViewersData } from '@/app/lib/dashboard-types';
 // Giả sử bạn import ảnh nền, đảm bảo đường dẫn đúng
 import TotalviewersBackground from '@/app/assets/image/Totalview.png';
+import { useTotalViewersData } from '@/app/hooks/useTotalViewersData';
 
-// --- DỮ LIỆU MẪU CHO CÁC BỘ LỌC ---
-const viewersData = {
-  '1D': { viewers: 12304.11, return: 3.5 },
-  '1W': { viewers: 89450.75, return: 2.1 },
-  '1M': { viewers: 350123.40, return: 5.8 },
-  '6M': { viewers: 1850678.90, return: 12.3 },
-  '1Y': { viewers: 4500000.00, return: 25.1 },
-};
-type TimeFilter = keyof typeof viewersData;
+
+
+
+
+type TimeFilter = '1D' | '1W' | '1M' | '6M' | '1Y';
 
 const TotalViewers = () => {
-  // === STATE VÀ LOGIC CHO DROPDOWN ===
   const [isOpen, setIsOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<TimeFilter>('6M');
-  const [data, setData] = useState(viewersData[activeFilter]);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const filters: TimeFilter[] = ['1D', '1W', '6M', '1Y'];
-
+  const { data, isLoading, error, refetch } = useTotalViewersData(activeFilter);
+  const filters: TimeFilter[] = ['1D', '1W', '1M', '6M', '1Y'];
   // Cập nhật dữ liệu khi bộ lọc thay đổi
-    useEffect(() => {
-    // Không cần set loading nếu là lần render đầu tiên
-    if (data !== viewersData[activeFilter]) {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        setData(viewersData[activeFilter]);
-        setIsLoading(false);
-      }, 500); // 0.5 giây để mô phỏng tải dữ liệu
-      return () => clearTimeout(timer);
-    }
-  }, [activeFilter, data]);
+  //  useEffect(() => {
+  //   setIsLoading(true);
+  //   const delay = data === null ? 1000 : 500;
+  //   const timer = setTimeout(() => {
+  //     setData(generateViewersData(activeFilter));
+  //     setIsLoading(false);
+  //   }, delay);
+  //   return () => clearTimeout(timer);
+  // }, [activeFilter]);
 
   // Đóng dropdown khi click ra ngoài
   useEffect(() => {
@@ -50,11 +42,6 @@ const TotalViewers = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [dropdownRef]);
-
-   let xAxisInterval: number | 'preserveStartEnd' = 'preserveStartEnd';
-  if (activeFilter === '6M') xAxisInterval = 29; // ~ 1 nhãn mỗi tháng
-  else if (activeFilter === '1M') xAxisInterval = 6; // ~ 1 nhãn mỗi tuần
-  else if (activeFilter === '1D') xAxisInterval = 3; 
   return (
     <WidgetCard className="relative overflow-hidden" transparent>
       <Image
@@ -112,22 +99,24 @@ const TotalViewers = () => {
         </div>
 
          {isLoading ? (
-          // Giao diện khi đang tải
           <div className="animate-pulse space-y-4">
-            <div className="h-10 bg-zinc-700/50 rounded-lg w-3/4 mb-12"></div>
-            <div className="h-6 bg-zinc-700/50 rounded-lg w-1/2 mb-2"></div>
+            <div className="h-10 bg-zinc-700/50 rounded-lg w-3/4"></div>
+            <div className="h-6 bg-zinc-700/50 rounded-lg w-1/2"></div>
           </div>
+        ) : error || !data ? (
+          <div className="text-red-400">Error loading data.</div>
         ) : (
-          // Giao diện khi đã tải xong
-          <div className="h-30">
+          <div>
             <p className="text-4xl font-bold text-white">
               {data.viewers.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </p> 
-            <div className="flex items-center gap-x-2 mt-12">
+            </p>
+            <div className="flex items-center gap-x-2 mt-2">
               <span className="text-xs text-gray-400">Return</span>
-              <span className="flex items-center gap-x-1 text-xs bg-green-900/50 text-green-400 border border-green-700/60 rounded-full px-1.5 py-px">
-                <TrendingUp size={14} />
-                +{data.return}%
+              <span className={`flex items-center gap-x-1 text-xs rounded-full px-1.5 py-px
+                ${data.return >= 0 ? 'bg-green-900/50 text-green-400 border border-green-700/60' : 'bg-red-900/50 text-red-400 border border-red-700/60'}`}
+              >
+                <TrendingUp size={14} className={data.return >= 0 ? '' : '-scale-y-100'}/>
+                {data.return >= 0 ? '+' : ''}{data.return}%
               </span>
             </div>
           </div>

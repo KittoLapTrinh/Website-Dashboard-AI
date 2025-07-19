@@ -6,56 +6,17 @@ import { SiTesla, SiGoogle, SiNvidia, SiApple } from 'react-icons/si';
 import { FaMicrosoft } from 'react-icons/fa';
 import WidgetCard from '../ui/WidgetCard';
 import StatusCard from '../ui/StatusCard';
-import { StatusCardSkeleton } from '../ui/StatusCardSkeleton'; // Import skeleton
+import { StatusCardSkeleton } from '../ui/skeletons/StatusCardSkeleton'; // Import skeleton
+import { type ServiceData, type ServiceStatus } from '@/app/lib/dashboard-types';
+import { useServiceStatus } from '@/app/hooks/useServiceStatus';
 
-// --- KIỂU DỮ LIỆU ---
-type ServiceStatus = 'ok' | 'error' | 'degraded';
-interface ServiceData {
-  id: string;
-  title: string;
-  subtitle: string;
-  icon: React.ReactNode;
-  name: string;
-  status: ServiceStatus;
-}
 
-// --- HÀM MÔ PHỎNG FETCH API ---
-const fetchServicesData = (): Promise<ServiceData[]> => {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve([
-        { id: 'wallet', title: '1.7M User', subtitle: '2.2M Tx (0.01s)', icon: <SiApple size={24} />, name: 'Wallet Blockchain', status: 'ok' },
-        { id: 'chain', title: 'Volum 125M', subtitle: '100,000 TPS', icon: <SiTesla size={24} />, name: 'Chain Analytics', status: 'error' },
-        { id: 'email', title: '1.7M User', subtitle: '2.2M Mail (0.01s)', icon: <FaMicrosoft size={22} />, name: 'Dapp Email', status: 'ok' },
-        { id: 'learn', title: '1.7M User', subtitle: '2.2M Course', icon: <SiGoogle size={22} />, name: 'Dapp Elearning', status: 'ok' },
-        { id: 'chat', title: '1.2M Messages', subtitle: '2.1M Users (0.02s)', icon: <SiNvidia size={24} />, name: 'Dapp Chat', status: 'ok' },
-      ]);
-    }, 500); // Giả lập độ trễ mạng 1.5 giây
-  });
-};
 
 const ServiceStatusGrid = () => {
-  const [services, setServices] = useState<ServiceData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // --- LOGIC LẤY DỮ LIỆU ---
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await fetchServicesData();
-      setServices(data);
-    } catch (err) {
-      setError('Failed to load service status.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const { services, isLoading, error, refetch } = useServiceStatus();
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+
   
   // --- HÀM XÁC ĐỊNH MÀU SẮC ---
   const getStatusColor = (status: ServiceStatus) => {
@@ -72,7 +33,7 @@ const ServiceStatusGrid = () => {
     <WidgetCard>
       <div className="flex justify-between items-center mb-4">
         {/* Nút Refresh */}
-        <button onClick={loadData} disabled={isLoading} className="p-2 rounded-full hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed">
+        <button onClick={() => refetch()} disabled={isLoading} className="p-2 rounded-full hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed">
           <RefreshCw size={16} className={`text-gray-400 ${isLoading ? 'animate-spin' : ''}`} />
         </button>
         {/* Nút See All */}
@@ -91,16 +52,18 @@ const ServiceStatusGrid = () => {
             Array.from({ length: 5 }).map((_, i) => <StatusCardSkeleton key={i} />)
           ) : error ? (
             // Hiển thị lỗi
-            <div className="col-span-full text-center text-red-400">{error}</div>
+            <div className="col-span-full text-center text-red-400">
+              Error: Could not fetch data from the contract.
+            </div>
           ) : (
             // Hiển thị dữ liệu
-            services.map((service) => (
+            services?.map((service) => (
               <StatusCard
                 key={service.id}
                 title={service.title}
                 subtitle={service.subtitle}
                 icon={service.icon}
-                name={service.name}
+                name={service.serviceName}
                 statusColor={getStatusColor(service.status)}
               />
             ))

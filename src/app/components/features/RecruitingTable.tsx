@@ -5,7 +5,7 @@ import { ArrowUpDown } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 import MiniTrendChart from '../ui/MiniTrendChart';
 import { SiTesla, SiApple, SiGoogle, SiNvidia } from 'react-icons/si';
-import { RecruitingTableRowSkeleton } from '../ui/RecruitingTableRowSkeleton';
+import { RecruitingTableRowSkeleton } from '../ui/skeletons/RecruitingTableRowSkeleton';
 // --- DỮ LIỆU VÀ KIỂU DỮ LIỆU ---
 type Field = 'Blockchain' | 'AI' | 'IOT' | 'Web Dev';
 type Trend = 'up' | 'down';

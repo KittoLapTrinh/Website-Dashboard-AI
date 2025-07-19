@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import WidgetCard from '../ui/WidgetCard';
 import MonitorCard from '../ui/MonitorCard';
 import { HeartPulse, Thermometer, Activity } from 'lucide-react';
-import { MonitorCardSkeleton } from '../ui/MonitorCardSkeleton'; 
+import { MonitorCardSkeleton } from '../ui/skeletons/MonitorCardSkeleton'; 
 // --- HÀM HELPER ĐỂ TẠO DỮ LIỆU BAN ĐẦU ---
 const createInitialData = (length: number, base: number, variance: number) => 
   Array.from({ length }, () => ({ value: base + (Math.random() - 0.5) * variance }));

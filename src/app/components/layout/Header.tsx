@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '@/app/assets/image/logo.png';
+import { ConnectWalletButton } from '@/app/components/layout/ConnectWalletButton';
 
 const Header = () => {
   return (
@@ -41,6 +42,7 @@ const Header = () => {
               Product & Applications
             </Link>
           </nav>
+          {/* <ConnectWalletButton /> */}
         </div>
 
     </header>

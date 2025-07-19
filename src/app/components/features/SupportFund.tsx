@@ -3,11 +3,12 @@
 import React, { useState, useMemo , useEffect} from 'react';
 import { Sun, Moon } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
-import { SupportFundSkeleton } from '../ui/SupportFundSkeleton';
+import { SupportFundSkeleton } from '../ui/skeletons/SupportFundSkeleton';
+import { type FundItemData } from '@/app/lib/dashboard-types';
 
 // --- HÀM TẠO DỮ LIỆU MẪU CHO 30 NGÀY ---
-const generateAllFundData = () => {
-  const data: { [key: string]: any[] } = {};
+const generateAllFundData = (): { data: { [key: string]: FundItemData[] }, initialDay: string } => {
+  const data: { [key: string]: FundItemData[] } = {};
   const now = new Date();
   const today = now.getDate();
   const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'short' });
@@ -17,7 +18,7 @@ const generateAllFundData = () => {
     date.setDate(now.getDate() - i);
     const dayKey = `${date.toLocaleDateString('en-US', { weekday: 'short' })} ${date.getDate()}`;
     
-    const itemCount = Math.floor(Math.random() * 4) + 1; // 1 đến 4 item mỗi ngày
+    const itemCount = Math.floor(Math.random() * 4) + 1;
     data[dayKey] = Array.from({ length: itemCount }, () => ({
       name: ['Albufin', 'Vitamin D', 'Omega 3', 'Iron', 'Zinc'][Math.floor(Math.random() * 5)],
       price: Math.floor(Math.random() * 20) + 10,

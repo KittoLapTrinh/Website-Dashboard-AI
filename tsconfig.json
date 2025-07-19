@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    // ✨ Đảm bảo target đủ hiện đại và module là CommonJS cho Node
+    "target": "es2020", 
+    "module": "CommonJS", 
+    "moduleResolution": "node", // Thay đổi thành "node"
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -22,6 +23,21 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  // ✨ Thêm khối "ts-node" này vào
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "hardhat.config.js", // Giữ lại
+    "scripts/**/*.ts",   // Giữ lại
+    "test/**/*.ts",      // Giữ lại
+    "hardhat.d.ts"       // Giữ lại
+  ],
   "exclude": ["node_modules"]
 }
