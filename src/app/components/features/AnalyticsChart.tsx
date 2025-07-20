@@ -1,8 +1,10 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis } from 'recharts';
+import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, XAxis } from 'recharts';
 import { ChevronDown, TrendingUp, Loader2 } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
+import { useAnalyticsChartData } from '@/app/hooks/useAnalyticsChartData'; // ✨ 1. Import hook
+import { type DataPoint } from '@/app/lib/dashboard-types'; 
 
 const generateChartData = (timeframe: 'Weekly' | 'Monthly' | 'Yearly') => {
   const data = [];
@@ -65,38 +67,18 @@ const CustomActiveDot = (props: any) => {
 };
 
 const AnalyticsChart = () => {
+  type TimeFilterType = 'Weekly' | 'Monthly' | 'Yearly';
   const [isOpen, setIsOpen] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<'Weekly' | 'Monthly' | 'Yearly'>('Weekly');
-  const filters: ('Weekly' | 'Monthly' | 'Yearly')[] = ['Weekly', 'Monthly', 'Yearly'];
+  const [activeFilter, setActiveFilter] = useState<TimeFilterType>('Weekly');
+  const filters: TimeFilterType[] = ['Weekly', 'Monthly', 'Yearly'];
   const dropdownRef = useRef<HTMLDivElement>(null);
- const [isLoading, setIsLoading] = useState(false);
-   const [chartData, setChartData] = useState(() => generateChartData('Weekly'));
 
-   useEffect(() => {
-    // Không cần set loading nếu là lần render đầu tiên
-    if (chartData.length > 0 && chartData[0].name !== generateChartData(activeFilter)[0].name) {
-        setIsLoading(true);
-        const timer = setTimeout(() => {
-            setChartData(generateChartData(activeFilter));
-            setIsLoading(false);
-        }, 500); // 0.5 giây để mô phỏng tải dữ liệu
-        return () => clearTimeout(timer);
-    } else if (chartData.length === 0) { // Trường hợp tải lần đầu
-        setIsLoading(true);
-        const timer = setTimeout(() => {
-            setChartData(generateChartData(activeFilter));
-            setIsLoading(false);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }
-  }, [activeFilter]);
+  const { data, isLoading, error, refetch } = useAnalyticsChartData(activeFilter);
 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) setIsOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -163,7 +145,7 @@ const AnalyticsChart = () => {
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={chartData}
+                data={data}
                 margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
               >
                 <defs>
@@ -189,10 +171,10 @@ const AnalyticsChart = () => {
                   cursor={false}
                   isAnimationActive={false}
                 />
-
+                <XAxis dataKey="date" hide={true} />
                 <Area 
                   type="monotone" 
-                  dataKey="uv" 
+                   dataKey="value"
                   stroke="#e5e7eb" 
                   strokeWidth={2}
                   fill="url(#analyticsChartGradient)"

@@ -6,6 +6,10 @@ import WidgetCard from '../ui/WidgetCard';
 import MiniTrendChart from '../ui/MiniTrendChart';
 import { SiTesla, SiApple, SiGoogle, SiNvidia } from 'react-icons/si';
 import { RecruitingTableRowSkeleton } from '../ui/skeletons/RecruitingTableRowSkeleton';
+import { useRecruitingData } from '@/app/hooks/useRecruitingData'; 
+import { type JobData, type JobField } from '@/app/lib/dashboard-types';
+
+
 // --- DỮ LIỆU VÀ KIỂU DỮ LIỆU ---
 type Field = 'Blockchain' | 'AI' | 'IOT' | 'Web Dev';
 type Trend = 'up' | 'down';
@@ -34,16 +38,19 @@ const filters: ('All' | Field)[] = ['All', 'Blockchain', 'AI', 'IOT'];
 const RecruitingTable = () => {
   const [activeFilter, setActiveFilter] = useState<'All' | Field>('All');
   const [sortConfig, setSortConfig] = useState<{ key: keyof RecruitData; direction: 'ascending' | 'descending' } | null>({ key: 'salary', direction: 'descending' });
-const [isLoading, setIsLoading] = useState(true);
+  const { jobs: allRecruitingData, isLoading, error, refetch } = useRecruitingData();
 
-useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500); // Mô phỏng độ trễ 0.5s
-    return () => clearTimeout(timer);
-  }, [activeFilter, sortConfig]);
-   const filteredData = useMemo(() => {
+// useEffect(() => {
+//     setIsLoading(true);
+//     const timer = setTimeout(() => {
+//       setIsLoading(false);
+//     }, 500); // Mô phỏng độ trễ 0.5s
+//     return () => clearTimeout(timer);
+//   }, [activeFilter, sortConfig]);
+
+  const filteredData = useMemo(() => {
+    if (!allRecruitingData) return [];
+    
     let sortableItems = [...allRecruitingData];
     if (activeFilter !== 'All') {
       sortableItems = sortableItems.filter(item => item.field === activeFilter);
@@ -81,9 +88,10 @@ useEffect(() => {
     // 👆 KẾT THÚC PHẦN SORT 👆
 
     return sortableItems;
-  }, [activeFilter, sortConfig]);
+  }, [allRecruitingData, activeFilter, sortConfig]);
 
-  const requestSort = (key: keyof RecruitData) => {
+  const requestSort = (key: keyof JobData) => {
+    if (key === 'trend' || key === 'icon' || key === 'id') return;
     let direction: 'ascending' | 'descending' = 'ascending';
     if (sortConfig?.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
@@ -91,7 +99,7 @@ useEffect(() => {
     setSortConfig({ key, direction });
   };
   
-  const headers: { label: string, key: keyof RecruitData }[] = [
+  const headers: { label: string, key: keyof JobData }[] = [
     { label: 'Foundation', key: 'foundation' },
     { label: 'Job Position', key: 'position' },
     { label: 'Field', key: 'field' },

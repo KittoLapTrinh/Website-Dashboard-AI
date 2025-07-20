@@ -5,47 +5,30 @@ import { Sun, Moon } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 import { SupportFundSkeleton } from '../ui/skeletons/SupportFundSkeleton';
 import { type FundItemData } from '@/app/lib/dashboard-types';
-
+import { useSupportFundData } from '@/app/hooks/useSupportFundData';
 // --- HÀM TẠO DỮ LIỆU MẪU CHO 30 NGÀY ---
-const generateAllFundData = (): { data: { [key: string]: FundItemData[] }, initialDay: string } => {
-  const data: { [key: string]: FundItemData[] } = {};
+const generateDays = (count: number) => {
+  const daysArray = [];
   const now = new Date();
-  const today = now.getDate();
-  const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'short' });
-
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < count; i++) {
     const date = new Date();
     date.setDate(now.getDate() - i);
-    const dayKey = `${date.toLocaleDateString('en-US', { weekday: 'short' })} ${date.getDate()}`;
-    
-    const itemCount = Math.floor(Math.random() * 4) + 1;
-    data[dayKey] = Array.from({ length: itemCount }, () => ({
-      name: ['Albufin', 'Vitamin D', 'Omega 3', 'Iron', 'Zinc'][Math.floor(Math.random() * 5)],
-      price: Math.floor(Math.random() * 20) + 10,
-      icon: Math.random() > 0.5 ? <Sun size={18} /> : <Moon size={18} />,
-      count: Math.floor(Math.random() * 3) + 1,
-      avatarColor: Math.random() > 0.3 ? 'bg-gray-600' : 'bg-white',
-    }));
+    // ✨ TẠO KEY THEO ĐỊNH DẠNG "Mon 23", "Sun 22",...
+    daysArray.push(
+      `${date.toLocaleDateString('en-US', { weekday: 'short' })} ${date.getDate()}`
+    );
   }
-  return { data, initialDay: `${dayOfWeek} ${today}` };
+  // Đảo ngược để ngày gần nhất ở cuối, sau đó lại đảo ngược để hiển thị
+  // Logic này đảm bảo ngày hôm nay là lựa chọn cuối cùng trong mảng
+  return { days: daysArray.reverse(), initialDay: daysArray[0] };
 };
 
-const { data: allFundData, initialDay } = generateAllFundData();
-const days = Object.keys(allFundData).reverse();
+// ✨ Tạo ra 30 ngày và ngày khởi tạo là ngày hôm nay
+const { days, initialDay } = generateDays(30);
 
 const SupportFund = () => {
   const [activeDay, setActiveDay] = useState(initialDay);
-  const [isLoading, setIsLoading] = useState(true);
-  const displayedData = useMemo(() => {
-    return allFundData[activeDay as keyof typeof allFundData] || [];
-  }, [activeDay]);
-
-     useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500); // Tải trong 1 giây
-    return () => clearTimeout(timer);
-  }, []);
+  const { items: displayedData, isLoading, error, refetch } = useSupportFundData(activeDay);
 
   const indentationClasses = ['pl-4', 'pl-12', 'pl-20', 'pl-28', 'pl-36'];
 
@@ -60,8 +43,8 @@ const SupportFund = () => {
         
         {/* === THANH CHỌN NGÀY CÓ SCROLL NGANG === */}
         <div className="overflow-x-auto hide-scrollbar mb-8">
-          <div className="flex items-center space-x-6 whitespace-nowrap px-1">
-            {days.map((day) => (
+          <div className="flex items-center space-x-6 whitespace-nowrap px-1 ">
+            {[...days].reverse().map((day) => (
               <button 
                 key={day} 
                 onClick={() => setActiveDay(day)} 

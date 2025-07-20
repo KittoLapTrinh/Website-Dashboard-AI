@@ -5,63 +5,26 @@ import WidgetCard from '../ui/WidgetCard';
 import MonitorCard from '../ui/MonitorCard';
 import { HeartPulse, Thermometer, Activity } from 'lucide-react';
 import { MonitorCardSkeleton } from '../ui/skeletons/MonitorCardSkeleton'; 
-// --- HÀM HELPER ĐỂ TẠO DỮ LIỆU BAN ĐẦU ---
-const createInitialData = (length: number, base: number, variance: number) => 
-  Array.from({ length }, () => ({ value: base + (Math.random() - 0.5) * variance }));
+import { useHeartbeatData } from '@/app/hooks/useHeartbeatData';
 
 const HeartbeatMonitor = () => {
-  // === STATE ĐỂ LƯU DỮ LIỆU ĐỘNG ===
-  const [bloodData, setBloodData] = useState(() => createInitialData(20, 30, 20));
-  const [tempData, setTempData] = useState(() => createInitialData(5, 38, 5));
-  const [heartData, setHeartData] = useState(() => createInitialData(20, 30, 20));
- const [isLoading, setIsLoading] = useState(true);
+   const { bloodData, tempData, heartData, isLoading, error, refetch } = useHeartbeatData();
+
   // Lấy ra giá trị cuối cùng để hiển thị và quyết định màu sắc
-  const lastBloodValue = Math.round(bloodData[bloodData.length - 1]?.value * 3 + 40); // Giả lập giá trị thực
-  const lastTempValue = (tempData[tempData.length - 1]?.value + 15).toFixed(1);
-  const lastHeartValue = Math.round(heartData[heartData.length - 1]?.value * 3 + 60);
+  const lastBloodValue = bloodData[bloodData.length - 1]?.value || 0;
+  const lastTempValue = (tempData[tempData.length - 1]?.value || 0).toFixed(1);
+  const lastHeartValue = heartData[heartData.length - 1]?.value || 0;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500); // Tải trong 1.5 giây
-    return () => clearTimeout(timer);
-  }, []);
-  // === useEffect ĐỂ MÔ PHỎNG DỮ LIỆU REALTIME ===
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Cập nhật Blood Status
-      setBloodData(prev => {
-        const change = (Math.random() - 0.5) * 5;
-        const newValue = prev[prev.length - 1].value + change;
-        return [...prev.slice(1), { value: Math.max(10, Math.min(50, newValue)) }];
-      });
-      // Cập nhật Temperature
-      setTempData(prev => {
-        const change = (Math.random() - 0.5) * 2;
-        const newValue = prev[prev.length - 1].value + change;
-        return [...prev.slice(1), { value: Math.max(15, Math.min(25, newValue)) }];
-      });
-      // Cập nhật Heart Rate
-      setHeartData(prev => {
-        const change = (Math.random() - 0.5) * 8;
-        const newValue = prev[prev.length - 1].value + change;
-        return [...prev.slice(1), { value: Math.max(10, Math.min(50, newValue)) }];
-      });
-    }, 2000); // Cập nhật mỗi 2 giây
-
-    return () => clearInterval(interval); // Dọn dẹp khi component unmount
-  }, []);
-
-  // === HÀM XÁC ĐỊNH MÀU SẮC DỰA TRÊN GIÁ TRỊ ===
+  // HÀM XÁC ĐỊNH MÀU SẮC DỰA TRÊN GIÁ TRỊ
   const getHeartStatusColor = (rate: number) => {
-    if (rate > 100) return '#ef4444'; // Đỏ - Báo động cao
-    if (rate < 60) return '#8b5cf6'; // Tím - Báo động thấp
-    return '#22c55e'; // Xanh - An toàn
+    if (rate > 100) return '#ef4444'; // Đỏ
+    if (rate < 60) return '#8b5cf6'; // Tím
+    return '#22c55e'; // Xanh
   };
   const getTempStatusColor = (temp: number) => {
-    if (temp > 37.5) return '#ef4444'; // Đỏ - Sốt
-    if (temp < 36.0) return '#8b5cf6'; // Tím - Hạ thân nhiệt
-    return '#22c55e'; // Xanh - An toàn
+    if (temp > 37.5) return '#ef4444'; // Đỏ
+    if (temp < 36.0) return '#8b5cf6'; // Tím
+    return '#22c55e'; // Xanh
   };
   
   return (
