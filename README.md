@@ -1,5 +1,8 @@
 .env.local:
 GOOGLE_API_KEY=AIzaSyAt9vPcAE1kf1rsdKSUAI_f2CtjardPtmY
+MTD_RPC_URL="https://rpc-proxy-sequoia.iqnb.com:8446"
+MTD_PRIVATE_KEY="0x848d466692aaa9d23c69771276e498b06fea7c35d08f0b461e00149714225a48"
+NEXT_PUBLIC_DASHBOARD_CONTRACT_ADDRESS="0xc1b418747b4b379aD613441d002Daa6F5623abD1"
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
