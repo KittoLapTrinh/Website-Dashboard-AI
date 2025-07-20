@@ -1,4 +1,5 @@
 .env.local:
+
 GOOGLE_API_KEY=AIzaSyAt9vPcAE1kf1rsdKSUAI_f2CtjardPtmY
 MTD_RPC_URL="https://rpc-proxy-sequoia.iqnb.com:8446"
 MTD_PRIVATE_KEY="0x848d466692aaa9d23c69771276e498b06fea7c35d08f0b461e00149714225a48"
