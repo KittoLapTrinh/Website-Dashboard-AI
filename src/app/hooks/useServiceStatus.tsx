@@ -1,67 +1,83 @@
-import { useReadContract, useAccount } from 'wagmi'; 
-import { dashboardAddress, dashboardAbi } from '@/app/contracts';
+// File: src/app/hooks/useServiceStatus.tsx
+"use client";
+
+import React, { useState, useEffect } from 'react';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
+import { 
+  dashboardFacadeAddress, 
+  dashboardFacadeAbi, 
+  serviceStatusContractAddress,
+  serviceStatusContractAbi 
+} from '@/app/contracts';
 import { type ServiceData, type ServiceStatus } from '@/app/lib/dashboard-types';
 import { SiApple, SiTesla, SiGoogle, SiNvidia } from 'react-icons/si';
 import { FaMicrosoft } from 'react-icons/fa';
+import { Log } from 'viem';
 
-import React from 'react';
+// --- KIỂU DỮ LIỆU THÔ ---
+interface RawService { name: string; title: string; subtitle: string; status: number; iconId: string; }
+type DecodedStatusLog = { args: { index?: bigint; newStatus?: number; }; } & Log;
 
-// Hàm helper để map iconId từ contract sang component icon
-// ... imports ...
+// --- HÀM BIẾN ĐỔI (TRANSFORMER) ---
+const formatServiceFromContract = (service: RawService, index: number): ServiceData => {
+  const getIconComponent = (iconId: string): React.ReactNode => {
+    switch (iconId.toLowerCase()) {
+      case 'apple': return <SiApple size={24} />;
+      case 'tesla': return <SiTesla size={24} />;
+      case 'microsoft': return <FaMicrosoft size={22} />;
+      case 'google': return <SiGoogle size={22} />;
+      case 'nvidia': return <SiNvidia size={24} />;
+      default: return null;
+    }
+  };
+  const formatStatus = (status: number): ServiceStatus => 
+    (['ok', 'degraded', 'error'] as ServiceStatus[])[status] || 'degraded';
 
-// Hàm helper để map iconId từ contract sang component icon - ĐÃ SỬA
-const getIconComponent = (iconId: string): React.ReactNode => {
-  const lowerCaseIconId = iconId.toLowerCase();
-
-  switch (lowerCaseIconId) {
-    case 'apple': return <SiApple size={24} />;
-    case 'tesla': return <SiTesla size={24} />;
-    case 'microsoft': return <FaMicrosoft size={22} />;
-    case 'google': return <SiGoogle size={22} />;
-    case 'nvidia': return <SiNvidia size={24} />;
-    default: return null;
-  }
+  return {
+    id: `service-${index}`,
+    serviceName: service.name,
+    title: service.title,
+    subtitle: service.subtitle,
+    status: formatStatus(service.status),
+    icon: getIconComponent(service.iconId),
+  };
 };
 
-// Hàm helper để map status từ contract (số) sang chuỗi
-const formatStatus = (status: number): ServiceStatus => {
-  if (status === 0) return 'ok';
-  if (status === 1) return 'degraded';
-  if (status === 2) return 'error';
-  return 'degraded'; // Mặc định
-};
-
+// --- CUSTOM HOOK ---
 export function useServiceStatus() {
+  const [services, setServices] = useState<ServiceData[]>([]);
 
-  const { chain } = useAccount();
-  
-  const { data: rawData, isLoading, error, refetch, isError, isSuccess  } = useReadContract({
-    address: dashboardAddress,
-    abi: dashboardAbi,
+  const { data: initialServices, isLoading, error, refetch } = useReadContract({
+    address: dashboardFacadeAddress,
+    abi: dashboardFacadeAbi,
     functionName: 'getAllServices',
-    
   });
-  
-  // console.log("Raw Data from Contract:", rawData);
-  const services = React.useMemo(() => {
-    if (!rawData || !Array.isArray(rawData)) return undefined;
-    
-    // ✨ Xử lý dữ liệu một cách an toàn hơn
-    return rawData.map((service: any, index: number) => {
-      // Chuyển đổi bigint sang string/number một cách an toàn
-      const userCount = typeof service.userCount === 'bigint' ? service.userCount.toString() : service.userCount;
-      const txCount = typeof service.txCount === 'bigint' ? service.txCount.toString() : service.txCount;
-      
-      return {
-        id: `service-${index + 1}`,
-        serviceName: service.name || '',
-        title: service.title || '',
-        subtitle: service.subtitle || '',
-        status: formatStatus(Number(service.status)), // Đảm bảo status là number
-        icon: getIconComponent(service.iconId || ''),
-      }
-    });
-  }, [rawData]);
 
-  return { services, isLoading, error, refetch };
+  useEffect(() => {
+    if (initialServices && Array.isArray(initialServices)) {
+      setServices((initialServices as RawService[]).map(formatServiceFromContract));
+    }
+  }, [initialServices]);
+
+  useWatchContractEvent({
+    address: serviceStatusContractAddress,
+    abi: serviceStatusContractAbi,
+    eventName: 'ServiceStatusUpdated',
+    onLogs(logs) {
+      logs.forEach(log => {
+        const { index, newStatus } = (log as DecodedStatusLog).args;
+        if (index !== undefined && newStatus !== undefined) {
+          setServices(prevServices => 
+            prevServices.map((service, i) => 
+              i === Number(index) 
+                ? { ...service, status: (['ok', 'degraded', 'error'] as ServiceStatus[])[newStatus] } 
+                : service
+            )
+          );
+        }
+      });
+    },
+  });
+
+  return { services, isLoading: isLoading && services.length === 0, error, refetch };
 }

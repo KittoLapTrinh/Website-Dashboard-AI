@@ -52,11 +52,14 @@ export interface TestimonialData {
   avatarSrc: string;
 }
 
+export type ReturnStatus = 'increase' | 'decrease' | 'neutral';
+
 export interface TotalViewersData {
   viewers: number;
-  // ✨ `return` giờ là một object
   return: {
     value: number;
-    status: 'increase' | 'decrease' | 'neutral';
+    status: ReturnStatus; // Sử dụng kiểu đã export ở trên
   }
 }
+
+

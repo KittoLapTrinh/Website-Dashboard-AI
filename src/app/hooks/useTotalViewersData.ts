@@ -1,67 +1,83 @@
-import { useState, useEffect, useMemo } from 'react';
+// File: src/app/hooks/useTotalViewersData.tsx
+"use client";
+
+import { useState, useEffect } from 'react';
 import { useReadContracts, useWatchContractEvent } from 'wagmi';
-import { dashboardAddress, dashboardAbi } from '@/app/contracts';
+import { 
+  dashboardFacadeAddress, 
+  dashboardFacadeAbi,
+  keyValueContractAddress,
+  keyValueContractAbi
+} from '@/app/contracts';
+import { type TotalViewersData, type ReturnStatus } from '@/app/lib/dashboard-types';
+import { Log } from 'viem';
 
+// --- KIỂU DỮ LIỆU THÔ ---
 type TimeFilter = '1D' | '1W' | '1M' | '6M' | '1Y';
-interface ViewerData {
-  viewers: number;
-  return: number;
-}
+type DecodedValueLog = { args: { key?: string; newValue?: bigint; } } & Log;
 
+// --- HÀM BIẾN ĐỔI ---
+const getReturnStatus = (value: number): ReturnStatus => {
+  if (value > 0) return 'increase';
+  if (value < 0) return 'decrease';
+  return 'neutral';
+};
+
+// --- CUSTOM HOOK ---
 export function useTotalViewersData(filter: TimeFilter) {
-  // ✨ 1. State để lưu trữ dữ liệu hiển thị
-  const [data, setData] = useState<ViewerData | null>(null);
+  const [data, setData] = useState<TotalViewersData | null>(null);
+  const viewersKey = `viewers_${filter}`;
+  const returnKey = `return_${filter}`;
 
-  // 2. Vẫn dùng useReadContracts để tải dữ liệu ban đầu một lần
   const { data: initialData, isLoading: initialLoading, error, refetch } = useReadContracts({
     contracts: [
-      {
-        address: dashboardAddress,
-        abi: dashboardAbi,
-        functionName: 'getSingleValueData',
-        args: [`viewers_${filter}`],
-      },
-      {
-        address: dashboardAddress,
-        abi: dashboardAbi,
-        functionName: 'getReturnData',
-        args: [`return_${filter}`],
-      },
+      { address: dashboardFacadeAddress, abi: dashboardFacadeAbi, functionName: 'getSingleValueData', args: [viewersKey] },
+      { address: dashboardFacadeAddress, abi: dashboardFacadeAbi, functionName: 'getReturnData', args: [returnKey] },
     ],
   });
 
-  // 3. Cập nhật state khi dữ liệu ban đầu được tải hoặc khi bộ lọc thay đổi
   useEffect(() => {
     if (initialData && initialData[0].status === 'success' && initialData[1].status === 'success') {
       const viewers = Number(initialData[0].result as bigint);
-      const returnValue = Number(initialData[1].result as bigint) / 10;
-      setData({ viewers, return: returnValue });
+      const returnPct = Number(initialData[1].result as bigint);
+      setData({ 
+        viewers, 
+        return: { value: returnPct, status: getReturnStatus(returnPct) }
+      });
     }
-  }, [initialData, filter]); // Phụ thuộc vào cả initialData và filter
+  }, [initialData, filter]);
 
-  // 4. ✨ LẮNG NGHE EVENT `TotalViewersUpdated` ✨
   useWatchContractEvent({
-    address: dashboardAddress,
-    abi: dashboardAbi,
-    eventName: 'TotalViewersUpdated',
+    address: keyValueContractAddress,
+    abi: keyValueContractAbi,
+    eventName: 'SingleValueUpdated',
     onLogs(logs) {
-      console.log('New TotalViewers event received:', logs);
-      
-      // Lấy dữ liệu từ event đầu tiên trong logs
-      const eventData = (logs[0] as any).args;
-
-      // Chỉ cập nhật state nếu event dành cho bộ lọc hiện tại
-      if (eventData.timeframe === filter) {
-        setData({
-          viewers: Number(eventData.viewers),
-          return: Number(eventData.returnPct) / 10,
-        });
-      }
+      logs.forEach(log => {
+        const { key, newValue } = (log as DecodedValueLog).args;
+        if (key === viewersKey && newValue !== undefined) {
+          setData(prevData => ({ ...prevData!, viewers: Number(newValue) }));
+        }
+      });
     },
   });
-  
-  // Trả về isLoading của lần tải đầu tiên
-  const isLoading = initialLoading || data === null;
 
-  return { data, isLoading, error, refetch };
+  useWatchContractEvent({
+    address: keyValueContractAddress,
+    abi: keyValueContractAbi,
+    eventName: 'ReturnValueUpdated',
+    onLogs(logs) {
+      logs.forEach(log => {
+        const { key, newValue } = (log as DecodedValueLog).args;
+        if (key === returnKey && newValue !== undefined) {
+          const newReturnPct = Number(newValue);
+          setData(prevData => ({ 
+            ...prevData!, 
+            return: { value: newReturnPct, status: getReturnStatus(newReturnPct) } 
+          }));
+        }
+      });
+    },
+  });
+
+  return { data, isLoading: initialLoading || data === null, error, refetch };
 }

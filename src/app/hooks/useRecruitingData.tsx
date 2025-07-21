@@ -1,31 +1,24 @@
+// File: src/app/hooks/useRecruitingData.tsx
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useReadContract, useWatchContractEvent } from 'wagmi';
-import { dashboardAddress, dashboardAbi } from '@/app/contracts';
-import { type JobData, type JobTrend, type JobField } from '@/app/lib/dashboard-types';
+import { 
+  dashboardFacadeAddress, 
+  dashboardFacadeAbi, 
+  recruitingContractAddress,
+  recruitingContractAbi 
+} from '@/app/contracts';
+import { type JobData, type JobField, type JobTrend } from '@/app/lib/dashboard-types';
 import { SiTesla, SiApple, SiGoogle, SiNvidia } from 'react-icons/si';
+import { FaBuilding } from 'react-icons/fa';
 import { Log } from 'viem';
 
-// --- KIỂU DỮ LIỆU THÔ TỪ CONTRACT ---
-interface RawJob {
-    foundation: string;
-    position: string;
-    field: string;
-    salary: bigint;
-    form: string;
-    trend: number; // 0 for Up, 1 for Down
-    iconId: string;
-}
+// --- KIỂU DỮ LIỆU THÔ ---
+interface RawJob { foundation: string; position: string; field: string; salary: bigint; form: string; trend: number; iconId: string; }
+type DecodedJobLog = { args: { newJob?: RawJob; }; } & Log;
 
-// --- KIỂU DỮ LIỆU CHO LOG EVENT ---
-type DecodedJobLog = {
-  args: {
-    newJob?: RawJob;
-  };
-} & Log;
-
-// --- HÀM HELPER ĐỂ ĐỊNH DẠNG DỮ LIỆU ---
+// --- HÀM BIẾN ĐỔI ---
 const formatJobFromContract = (job: RawJob, index: number): JobData => {
   const getIcon = (iconId: string) => {
     switch (iconId.toLowerCase()) {
@@ -33,8 +26,9 @@ const formatJobFromContract = (job: RawJob, index: number): JobData => {
       case 'tesla': return <SiTesla size={24} className="text-gray-400"/>;
       case 'apple': return <SiApple size={24} className="text-gray-400"/>;
       case 'google': return <SiGoogle size={22} className="text-gray-400"/>;
-      case 'fpt': return <SiTesla size={24} className="text-gray-400"/>; // Giả sử
-      default: return null;
+      case 'fpt': // Fallthrough
+      case 'consensys': // Fallthrough
+      default: return <FaBuilding size={24} className="text-gray-400"/>;
     }
   };
 
@@ -45,7 +39,7 @@ const formatJobFromContract = (job: RawJob, index: number): JobData => {
     field: job.field as JobField,
     salary: Number(job.salary),
     form: job.form,
-    trend: job.trend === 0 ? 'up' : 'down',
+    trend: (job.trend === 0 ? 'up' : 'down') as JobTrend,
     icon: getIcon(job.iconId),
   };
 };
@@ -54,41 +48,32 @@ const formatJobFromContract = (job: RawJob, index: number): JobData => {
 export function useRecruitingData() {
   const [jobs, setJobs] = useState<JobData[]>([]);
 
-  // 1. Tải dữ liệu ban đầu
   const { data: initialJobs, isLoading, error, refetch } = useReadContract({
-    address: dashboardAddress,
-    abi: dashboardAbi,
+    address: dashboardFacadeAddress,
+    abi: dashboardFacadeAbi,
     functionName: 'getAllJobs',
   });
 
-  // 2. Xử lý dữ liệu ban đầu khi có kết quả
   useEffect(() => {
     if (initialJobs && Array.isArray(initialJobs)) {
-      const formattedJobs = (initialJobs as RawJob[]).map(formatJobFromContract);
-      setJobs(formattedJobs);
+      setJobs((initialJobs as RawJob[]).map(formatJobFromContract).reverse());
     }
   }, [initialJobs]);
 
-  // 3. Lắng nghe event khi có job mới được thêm
   useWatchContractEvent({
-    address: dashboardAddress,
-    abi: dashboardAbi,
+    address: recruitingContractAddress,
+    abi: recruitingContractAbi,
     eventName: 'JobAdded',
     onLogs(logs) {
       logs.forEach(log => {
-        const decodedLog = log as DecodedJobLog;
-        const newJobRaw = decodedLog.args.newJob;
-
+        const newJobRaw = (log as DecodedJobLog).args.newJob;
         if (newJobRaw) {
-          console.log("New job event received:", newJobRaw);
-          // Giả sử job mới luôn có index cao nhất
           const formattedNewJob = formatJobFromContract(newJobRaw, jobs.length);
-          // Thêm job mới vào đầu danh sách để hiển thị ngay lập tức
           setJobs(prevJobs => [formattedNewJob, ...prevJobs]);
         }
       });
     },
   });
 
-  return { jobs, isLoading, error, refetch };
+  return { jobs, isLoading: isLoading && jobs.length === 0, error, refetch };
 }

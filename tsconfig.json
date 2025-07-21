@@ -13,7 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    
     "incremental": true,
+    
     "plugins": [
       {
         "name": "next"
@@ -21,13 +23,16 @@
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    
   },
   // ✨ Thêm khối "ts-node" này vào
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
+      
     }
+    
   },
   "include": [
     "next-env.d.ts",
