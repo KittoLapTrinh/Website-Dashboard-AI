@@ -1,65 +1,81 @@
+// File: internal/automations/recruiting.go
 package automations
 
 import (
-	"fmt"
+	"log"
 	"math/big"
-	"math/rand"
-	"strings" // ✨ THÊM VÀO: Cần để chuyển chuỗi thành chữ thường
+	"strings"
 	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/core/types"
 
 	"dashboard/backend/internal/blockchain"
+	"dashboard/backend/internal/integrations" // ✨ 1. IMPORT MODULE SCRAPER ✨
 )
 
-// StartRecruitingUpdates khởi chạy goroutine để tự động thêm các công việc tuyển dụng mới.
+// StartRecruitingUpdates khởi chạy goroutine để quét và thêm việc làm thật.
 func StartRecruitingUpdates(instance *blockchain.RecruitingContract) {
-	ticker := time.NewTicker(20 * time.Second)
-	var jobCounter int64 = 0
+	// Hàm để chạy logic quét và cập nhật
+	runScrapingCycle := func() {
+		log.Println("Running scraping and updating cycle...")
+		
+		// ✨ 2. GỌI HÀM SCRAPER ĐỂ LẤY DỮ LIỆU THẬT ✨
+		scrapedJobs := integrations.ScrapeCryptoJobsListDeveloper()
 
-	for range ticker.C {
-		jobCounter++
-		localCounter := jobCounter
+		if len(scrapedJobs) == 0 {
+			log.Println("No new jobs found. Waiting for next cycle.")
+			return
+		}
 
-		blockchain.TxQueue <- blockchain.TxRequest{
-			ServiceName: "Recruiting",
-			Action: func(auth *bind.TransactOpts) (*types.Transaction, error) {
-				// --- DỮ LIỆU MẪU ĐÃ MỞ RỘNG ---
-				foundations := []string{"Chainlink", "Polygon", "Uniswap", "Aave", "Nvidia", "Tesla", "Google", "Apple"}
-				positions := []string{"Smart Contract Engineer", "DeFi Analyst", "Rust Developer", "AI Scientist"}
-				fields := []string{"Blockchain", "AI", "IOT", "Web Dev"}
-				// ✨ 2. THÊM DANH SÁCH CÁC HÌNH THỨC LÀM VIỆC ✨
-				forms := []string{"Remote", "Fulltime"}
-
-				// --- LOGIC CHỌN LỌC DỮ LIỆU ---
-
-				// ✨ 1. CHỌN FOUNDATION TRƯỚC ĐỂ LẤY ICON TƯƠNG ỨNG ✨
-				// Chọn một foundation gốc từ danh sách.
-				selectedFoundation := foundations[rand.Intn(len(foundations))]
-
-				// Tạo tên foundation đầy đủ để hiển thị, bao gồm cả số đếm.
-				fullFoundationName := selectedFoundation + fmt.Sprintf(" %d", localCounter)
-				
-				// Tạo IconId bằng cách chuyển tên gốc thành chữ thường.
-				// Điều này giúp frontend dễ dàng ánh xạ tới component icon (ví dụ: 'chainlink' -> <ChainlinkIcon />).
-				iconId := strings.ToLower(selectedFoundation)
-
-
-				// --- TẠO CẤU TRÚC DỮ LIỆU MỚI ---
-				newJob := blockchain.DataStructsJob{
-					Foundation: fullFoundationName, // Tên đầy đủ
-					Position:   positions[rand.Intn(len(positions))],
-					Field:      fields[rand.Intn(len(fields))],
-					Salary:     big.NewInt(int64(60000 + rand.Intn(20000))),
-					Form:       forms[rand.Intn(len(forms))], // Lấy ngẫu nhiên từ danh sách forms
-					Trend:      uint8(rand.Intn(2)),
-					IconId:     iconId, // Lấy IconId đã được tạo
-				}
-
-				fmt.Printf("[Recruiting] Queueing request to add job: %s (Icon: %s)\n", newJob.Foundation, newJob.IconId)
-				return instance.AddJob(auth, newJob)
-			},
+		// 3. Lặp qua các công việc đã quét được và gửi lên blockchain
+		for _, job := range scrapedJobs {
+			// Tạo bản sao để closure sử dụng đúng
+			localJob := job 
+			
+			blockchain.TxQueue <- blockchain.TxRequest{
+				ServiceName: "Recruiting-Scraper",
+				Action: func(auth *bind.TransactOpts) (*types.Transaction, error) {
+					// Chuyển đổi dữ liệu từ ScrapedJob sang DataStructsJob
+					newJob := blockchain.DataStructsJob{
+						Foundation:  localJob.Foundation,
+						Position:    localJob.JobPosition,
+						Field:       mapField(localJob.JobPosition), // Tự động đoán Field
+						Salary:      big.NewInt(70000), // Tạm thời gán cứng
+						Form:        localJob.Form,
+						Trend:       0, // 0 = Up
+						IconId:      strings.ToLower(strings.Split(localJob.Foundation, " ")[0]),
+					}
+					
+					log.Printf("Queueing REAL job to add: %s at %s", newJob.Position, newJob.Foundation)
+					return instance.AddJob(auth, newJob)
+				},
+			}
+			// Thêm một khoảng nghỉ nhỏ giữa các giao dịch để không làm quá tải hàng đợi
+			time.Sleep(1 * time.Second) 
 		}
 	}
+
+	// Chạy lần đầu tiên ngay khi khởi động
+	go runScrapingCycle()
+
+	// ✨ 4. THAY ĐỔI TẦN SUẤT QUÉT ✨
+	// Quét lại sau mỗi 6 giờ, không nên quét quá thường xuyên
+	ticker := time.NewTicker(6 * time.Hour)
+	for range ticker.C {
+		runScrapingCycle()
+	}
+}
+
+// mapField là một hàm helper đơn giản để tự động đoán lĩnh vực dựa trên chức danh.
+func mapField(position string) string {
+	lowerPos := strings.ToLower(position)
+	if strings.Contains(lowerPos, "ai") || strings.Contains(lowerPos, "scientist") {
+		return "AI"
+	}
+	if strings.Contains(lowerPos, "iot") || strings.Contains(lowerPos, "firmware") {
+		return "IOT"
+	}
+	// Mặc định là Blockchain
+	return "Blockchain"
 }
