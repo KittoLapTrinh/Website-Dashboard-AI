@@ -1,5 +1,5 @@
 ##
-.env.local:
+# .env.local:
 GOOGLE_API_KEY=AIzaSyAt9vPcAE1kf1rsdKSUAI_f2CtjardPtmY
 MTD_RPC_URL="https://rpc-proxy-sequoia.iqnb.com:8446"
 MTD_PRIVATE_KEY="0x848d466692aaa9d23c69771276e498b06fea7c35d08f0b461e00149714225a48"
@@ -14,7 +14,7 @@ RECRUITING_CONTRACT_ADDRESS="0x5155310f47C92a02241Cd4Ea6b3E7896169d5590"
 SUPPORT_FUND_CONTRACT_ADDRESS="0xD5321b2543ea7D68FCdEb6A976eD1b99041A9680"
 TIME_SERIES_CONTRACT_ADDRESS="0xE8Bb2dc043281c68eED34BFBc6d7a0A0D8C6d023"
 KEY_VALUE_CONTRACT_ADDRESS="0x9fa062aA86Ff657EA9766eD283AeC9522713e0D0"
-
+##
 ---------------------------------------------------------------------------------
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
