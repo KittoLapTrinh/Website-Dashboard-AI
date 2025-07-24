@@ -4,9 +4,11 @@ package integrations
 import (
 	"context"
 	"log"
-	"strings"
-	"time"
 	"regexp"
+	"strings"
+	"sync"
+	"time"
+
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/chromedp"
 )
@@ -20,16 +22,61 @@ type ScrapedJob struct {
 	Form        string
 }
 
-// ScrapeTopCV quét trang tìm việc làm blockchain của TopCV với cấu hình đơn giản nhất.
-func ScrapeTopCV() []ScrapedJob {
-	log.Println("--- Starting to scrape TopCV with SIMPLEST config ---")
+// ScrapeSource định nghĩa một nguồn dữ liệu cần quét.
+type ScrapeSource struct {
+	Field string
+	URL   string
+}
+
+// ScrapeAllJobs là hàm chính, điều phối việc quét từ nhiều nguồn trên TopCV.
+func ScrapeAllJobs() []ScrapedJob {
+	log.Println("--- Starting to scrape jobs from ALL TopCV sources ---")
+	
+	// ✨ DANH SÁCH CÁC NGUỒN DỮ LIỆU ĐÃ ĐƯỢC CẬP NHẬT CHÍNH XÁC ✨
+	sources := []ScrapeSource{
+		{Field: "Blockchain", URL: "https://www.topcv.vn/tim-viec-lam-blockchain?sba=1"},
+		{Field: "AI", URL: "https://www.topcv.vn/tim-viec-lam-ai?type_keyword=1&sba=1"},
+		{Field: "IOT", URL: "https://www.topcv.vn/tim-viec-lam-iot?type_keyword=1&sba=1"},
+		{Field: "Web Dev", URL: "https://www.topcv.vn/tim-viec-lam-web-developer?type_keyword=1&sba=1"},
+	}
+
+	var allJobs []ScrapedJob
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+
+	for _, source := range sources {
+		wg.Add(1)
+		
+		go func(src ScrapeSource) {
+			defer wg.Done()
+			
+			log.Printf("Scraping jobs for field: %s from %s", src.Field, src.URL)
+			jobsFromSource := scrapeSingleSource(src)
+
+			mu.Lock()
+			allJobs = append(allJobs, jobsFromSource...)
+			mu.Unlock()
+		}(source)
+	}
+	
+	wg.Wait()
+	
+	log.Printf("Finished scraping all sources. Total jobs found: %d", len(allJobs))
+	return allJobs
+}
+
+// scrapeSingleSource chịu trách nhiệm quét một URL duy nhất.
+func scrapeSingleSource(source ScrapeSource) []ScrapedJob {
 	var jobs []ScrapedJob
 
-	// Sử dụng cấu hình mặc định, chỉ tắt headless để quan sát.
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", false),
+		chromedp.Flag("headless", true), // Chạy ẩn để không mở nhiều cửa sổ
+		chromedp.Flag("disable-gpu", true),
+		chromedp.UserAgent(`Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36`),
+		chromedp.Flag("enable-automation", false),
+		chromedp.Flag("disable-extensions", false),
+		chromedp.Flag("disable-blink-features", "AutomationControlled"),
 	)
-
 	allocCtx, cancelAlloc := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancelAlloc()
 
@@ -41,77 +88,41 @@ func ScrapeTopCV() []ScrapedJob {
 
 	var nodes []*cdp.Node
 
-	// ✨ LOGIC ĐÃ ĐƯỢC SỬA LẠI CHO ĐÚNG CÚ PHÁP ✨
-	log.Println("Step 1: Navigating to URL...")
 	err := chromedp.Run(ctx,
-		chromedp.Navigate(`https://www.topcv.vn/tim-viec-lam-blockchain?sba=1`),
-	)
-	if err != nil {
-		log.Printf("ERROR: Failed to navigate to URL: %v", err)
-		return jobs
-	}
-
-	log.Println("Step 2: Waiting for 15 seconds to observe...")
-	if err := chromedp.Run(ctx, chromedp.Sleep(15*time.Second)); err != nil {
-		log.Printf("ERROR: Sleep interrupted: %v", err)
-		return jobs
-	}
-		
-	log.Println("Step 3: Attempting to find and extract job nodes...")
-	err = chromedp.Run(ctx,
+		chromedp.Navigate(source.URL),
+		chromedp.WaitVisible(`div.job-item-search-result`),
 		chromedp.Nodes(`div.job-item-search-result`, &nodes, chromedp.ByQueryAll),
 	)
 
 	if err != nil {
-		log.Printf("ERROR: Failed to find job nodes. The selector might be wrong or blocked. Error: %v", err)
+		log.Printf("Failed to scrape source '%s' (%s): %v", source.Field, source.URL, err)
 		return jobs
 	}
 
-	if len(nodes) == 0 {
-		log.Println("WARNING: No job items found with the specified selector.")
-		return jobs
-	}
-	
-	log.Printf("SUCCESS: Found %d job items. Parsing details...", len(nodes))
-	
-	// Lặp qua từng node và trích xuất thông tin chi tiết
 	for _, node := range nodes {
-		var position, foundation, salaryHTML, location string // ✨ Đổi tên biến `salary` thành `salaryHTML`
+		var position, foundation, salaryHTML, location string
 
-		err := chromedp.Run(ctx,
+		chromedp.Run(ctx,
 			chromedp.Text(`h3.title a span`, &position, chromedp.ByQuery, chromedp.FromNode(node)),
 			chromedp.Text(`a.company span.company-name`, &foundation, chromedp.ByQuery, chromedp.FromNode(node)),
-			
-			// ✨ THAY ĐỔI QUAN TRỌNG NHẤT: LẤY `innerHTML` THAY VÌ `Text` ✨
 			chromedp.InnerHTML(`label.title-salary`, &salaryHTML, chromedp.ByQuery, chromedp.FromNode(node)),
-			
 			chromedp.Text(`label.address span.city-text`, &location, chromedp.ByQuery, chromedp.FromNode(node)),
 		)
 		
-		if err != nil {
-			log.Printf("Could not parse all details for a job item, continuing... Error: %v", err)
-			continue
-		}
-		
 		if position != "" && foundation != "" {
-			// ✨ DỌN DẸP CHUỖI HTML ĐỂ LẤY TEXT SẠCH ✨
-			// Dùng regex để xóa tất cả các thẻ HTML (ví dụ: <i ...></i>)
 			re := regexp.MustCompile(`<[^>]*>`)
-			cleanSalary := re.ReplaceAllString(salaryHTML, "")
-			cleanSalary = strings.TrimSpace(cleanSalary) // Xóa khoảng trắng thừa
+			cleanSalary := strings.TrimSpace(re.ReplaceAllString(salaryHTML, ""))
 
 			job := ScrapedJob{
 				Foundation:  strings.TrimSpace(foundation),
 				JobPosition: strings.TrimSpace(position),
-				Salary:      cleanSalary, // Sử dụng chuỗi đã được dọn dẹp
-				Field:       "Blockchain",
+				Salary:      cleanSalary,
+				Field:       source.Field, // Gán đúng Field từ nguồn
 				Form:        inferForm(location),
 			}
 			jobs = append(jobs, job)
-			log.Printf("Parsed job: '%s' at '%s' with Salary Text: '%s'", job.JobPosition, job.Foundation, job.Salary)
 		}
 	}
-
 	return jobs
 }
 

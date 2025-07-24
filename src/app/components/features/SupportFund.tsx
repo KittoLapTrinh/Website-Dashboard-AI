@@ -35,7 +35,7 @@ const SupportFund = () => {
   return (
     <WidgetCard>
       
-      <div className="flex flex-col h-60"> {/* Thay đổi h-60 thành h-full */}
+      <div className="flex flex-col h-65"> {/* Thay đổi h-60 thành h-full */}
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-white">Support Fund</h2>
