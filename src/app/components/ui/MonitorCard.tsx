@@ -45,7 +45,7 @@ const MonitorCard = ({
         <div className="relative flex-grow mt-4 h-24">
           <ResponsiveContainer width="80%" height="100%">
             <AreaChart data={data} margin={{ top: 35, right: 5, left: 5, bottom: 5 }} >
-              <Area type="monotone" dataKey="value" stroke="white" strokeWidth={2} fill="transparent" />
+              <Area type="monotone" dataKey="value" stroke="white" strokeWidth={2} fill="transparent"   isAnimationActive={false}  />
             </AreaChart>
           </ResponsiveContainer>
           {/* Render giá trị cuối cùng ở đây */}

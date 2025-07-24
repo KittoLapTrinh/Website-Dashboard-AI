@@ -8,26 +8,26 @@ import { type FundItemData } from '@/app/lib/dashboard-types';
 import { useSupportFundData } from '@/app/hooks/useSupportFundData';
 // --- HÀM TẠO DỮ LIỆU MẪU CHO 30 NGÀY ---
 const generateDays = (count: number) => {
-  const daysArray = [];
+  const daysArray: string[] = [];
   const now = new Date();
   for (let i = 0; i < count; i++) {
     const date = new Date();
     date.setDate(now.getDate() - i);
-    // ✨ TẠO KEY THEO ĐỊNH DẠNG "Mon 23", "Sun 22",...
     daysArray.push(
-      `${date.toLocaleDateString('en-US', { weekday: 'short' })} ${date.getDate()}`
+      `${date.toLocaleString('en-US', { weekday: 'short' })} ${date.getDate()}`
     );
   }
-  // Đảo ngược để ngày gần nhất ở cuối, sau đó lại đảo ngược để hiển thị
-  // Logic này đảm bảo ngày hôm nay là lựa chọn cuối cùng trong mảng
-  return { days: daysArray.reverse(), initialDay: daysArray[0] };
+  // Ngày hôm nay (hoặc ngày gần nhất) sẽ là phần tử đầu tiên sau khi đảo ngược
+  const reversedDays = daysArray.reverse();
+  return { days: reversedDays, initialDay: reversedDays[reversedDays.length - 1] };
 };
 
 // ✨ Tạo ra 30 ngày và ngày khởi tạo là ngày hôm nay
 const { days, initialDay } = generateDays(30);
 
 const SupportFund = () => {
-  const [activeDay, setActiveDay] = useState(initialDay);
+  const { days, initialDay } = useMemo(() => generateDays(30), []);
+  const [activeDay, setActiveDay] = useState<string>(initialDay);
   const { items: displayedData, isLoading, error, refetch } = useSupportFundData(activeDay);
 
   const indentationClasses = ['pl-4', 'pl-12', 'pl-20', 'pl-28', 'pl-36'];

@@ -6,14 +6,24 @@ import MonitorCard from '../ui/MonitorCard';
 import { HeartPulse, Thermometer, Activity } from 'lucide-react';
 import { MonitorCardSkeleton } from '../ui/skeletons/MonitorCardSkeleton'; 
 import { useHeartbeatData } from '@/app/hooks/useHeartbeatData';
-
+import { type DataPoint } from '@/app/lib/dashboard-types';
 const HeartbeatMonitor = () => {
    const { bloodData, tempData, heartData, isLoading, error, refetch } = useHeartbeatData();
-
   // Lấy ra giá trị cuối cùng để hiển thị và quyết định màu sắc
   const lastBloodValue = bloodData[bloodData.length - 1]?.value || 0;
   const lastTempValue = (tempData[tempData.length - 1]?.value || 0).toFixed(1);
   const lastHeartValue = heartData[heartData.length - 1]?.value || 0;
+
+  // const WINDOW_SIZE = 30; 
+
+  const getLastNItems = (arr: DataPoint[], n: number) => {
+    if (!arr || arr.length === 0) return [];
+    return arr.slice(Math.max(arr.length - n, 0));
+  };
+
+  //  const visibleBloodData = getLastNItems(bloodData, WINDOW_SIZE);
+  // const visibleTempData = getLastNItems(tempData, WINDOW_SIZE);
+  // const visibleHeartData = getLastNItems(heartData, WINDOW_SIZE);
 
   // HÀM XÁC ĐỊNH MÀU SẮC DỰA TRÊN GIÁ TRỊ
   const getHeartStatusColor = (rate: number) => {
