@@ -2,11 +2,13 @@
 package integrations
 
 import (
+	"context"
 	"log"
 	"strings"
-
-	"github.com/gocolly/colly/v2"
-	"github.com/gocolly/colly/v2/queue"
+	"time"
+	"regexp"
+	"github.com/chromedp/cdproto/cdp"
+	"github.com/chromedp/chromedp"
 )
 
 // ScrapedJob định nghĩa cấu trúc cho một công việc được quét về.
@@ -18,68 +20,109 @@ type ScrapedJob struct {
 	Form        string
 }
 
-// ScrapeCryptoJobsListDeveloper quét trang developer của CryptoJobsList.
-func ScrapeCryptoJobsListDeveloper() []ScrapedJob {
-	log.Println("Starting to scrape jobs from CryptoJobsList/developer...")
+// ScrapeTopCV quét trang tìm việc làm blockchain của TopCV với cấu hình đơn giản nhất.
+func ScrapeTopCV() []ScrapedJob {
+	log.Println("--- Starting to scrape TopCV with SIMPLEST config ---")
 	var jobs []ScrapedJob
 
-	c := colly.NewCollector(
-		colly.AllowedDomains("cryptojobslist.com"),
-		colly.Async(true),
+	// Sử dụng cấu hình mặc định, chỉ tắt headless để quan sát.
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", false),
 	)
 
-	c.Limit(&colly.LimitRule{DomainGlob: "*", Parallelism: 2})
+	allocCtx, cancelAlloc := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancelAlloc()
+
+	ctx, cancel := chromedp.NewContext(allocCtx)
+	defer cancel()
+
+	ctx, cancel = context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+
+	var nodes []*cdp.Node
+
+	// ✨ LOGIC ĐÃ ĐƯỢC SỬA LẠI CHO ĐÚNG CÚ PHÁP ✨
+	log.Println("Step 1: Navigating to URL...")
+	err := chromedp.Run(ctx,
+		chromedp.Navigate(`https://www.topcv.vn/tim-viec-lam-blockchain?sba=1`),
+	)
+	if err != nil {
+		log.Printf("ERROR: Failed to navigate to URL: %v", err)
+		return jobs
+	}
+
+	log.Println("Step 2: Waiting for 15 seconds to observe...")
+	if err := chromedp.Run(ctx, chromedp.Sleep(15*time.Second)); err != nil {
+		log.Printf("ERROR: Sleep interrupted: %v", err)
+		return jobs
+	}
+		
+	log.Println("Step 3: Attempting to find and extract job nodes...")
+	err = chromedp.Run(ctx,
+		chromedp.Nodes(`div.job-item-search-result`, &nodes, chromedp.ByQueryAll),
+	)
+
+	if err != nil {
+		log.Printf("ERROR: Failed to find job nodes. The selector might be wrong or blocked. Error: %v", err)
+		return jobs
+	}
+
+	if len(nodes) == 0 {
+		log.Println("WARNING: No job items found with the specified selector.")
+		return jobs
+	}
 	
-	q, _ := queue.New(
-		2,
-		&queue.InMemoryQueueStorage{MaxSize: 10000},
-	)
+	log.Printf("SUCCESS: Found %d job items. Parsing details...", len(nodes))
+	
+	// Lặp qua từng node và trích xuất thông tin chi tiết
+	for _, node := range nodes {
+		var position, foundation, salaryHTML, location string // ✨ Đổi tên biến `salary` thành `salaryHTML`
 
-	// ✨ SỬA LẠI SELECTOR CHÍNH VÀ CÁC SELECTOR CON ✨
-	c.OnHTML("tbody tr", func(e *colly.HTMLElement) {
-		// Bỏ qua các hàng là quảng cáo (có class 'notAJobAd' hoặc chứa text "Ad")
-		if e.DOM.HasClass("notAJobAd") || strings.Contains(e.Text, "Ad") {
-			return
+		err := chromedp.Run(ctx,
+			chromedp.Text(`h3.title a span`, &position, chromedp.ByQuery, chromedp.FromNode(node)),
+			chromedp.Text(`a.company span.company-name`, &foundation, chromedp.ByQuery, chromedp.FromNode(node)),
+			
+			// ✨ THAY ĐỔI QUAN TRỌNG NHẤT: LẤY `innerHTML` THAY VÌ `Text` ✨
+			chromedp.InnerHTML(`label.title-salary`, &salaryHTML, chromedp.ByQuery, chromedp.FromNode(node)),
+			
+			chromedp.Text(`label.address span.city-text`, &location, chromedp.ByQuery, chromedp.FromNode(node)),
+		)
+		
+		if err != nil {
+			log.Printf("Could not parse all details for a job item, continuing... Error: %v", err)
+			continue
 		}
+		
+		if position != "" && foundation != "" {
+			// ✨ DỌN DẸP CHUỖI HTML ĐỂ LẤY TEXT SẠCH ✨
+			// Dùng regex để xóa tất cả các thẻ HTML (ví dụ: <i ...></i>)
+			re := regexp.MustCompile(`<[^>]*>`)
+			cleanSalary := re.ReplaceAllString(salaryHTML, "")
+			cleanSalary = strings.TrimSpace(cleanSalary) // Xóa khoảng trắng thừa
 
-		// Lấy tất cả các tag để xác định hình thức làm việc
-		var form string = "N/A"
-		e.ForEach("td.job-tags span.category", func(_ int, el *colly.HTMLElement) {
-			text := strings.ToLower(el.Text)
-			if text == "remote" {
-				form = "Remote"
-			} else if text == "full time" {
-				form = "Fulltime"
+			job := ScrapedJob{
+				Foundation:  strings.TrimSpace(foundation),
+				JobPosition: strings.TrimSpace(position),
+				Salary:      cleanSalary, // Sử dụng chuỗi đã được dọn dẹp
+				Field:       "Blockchain",
+				Form:        inferForm(location),
 			}
-		})
-
-		job := ScrapedJob{
-			Foundation:  strings.TrimSpace(e.ChildText("a.job-company-name-text")),
-			JobPosition: strings.TrimSpace(e.ChildText("a.job-title-text")),
-			Salary:      strings.TrimSpace(e.ChildText("div span.align-middle")),
-			Form:        form,
-			Field:       "Blockchain", // Tạm thời gán cứng
-		}
-
-		if job.Foundation != "" && job.JobPosition != "" {
 			jobs = append(jobs, job)
-			log.Printf("Found job: %s at %s", job.JobPosition, job.Foundation)
+			log.Printf("Parsed job: '%s' at '%s' with Salary Text: '%s'", job.JobPosition, job.Foundation, job.Salary)
 		}
-	})
+	}
 
-	c.OnRequest(func(r *colly.Request) {
-		log.Println("Visiting", r.URL.String())
-	})
-
-	c.OnError(func(r *colly.Response, err error) {
-		log.Println("Request URL:", r.Request.URL, "failed with response code:", r.StatusCode, "\nError:", err)
-	})
-	
-	// ✨ SỬA LẠI URL ĐÍCH ✨
-	q.AddURL("https://cryptojobslist.com/developer")
-	q.Run(c)
-	c.Wait()
-
-	log.Printf("Scraping finished. Found %d jobs.", len(jobs))
 	return jobs
+}
+
+// inferForm là hàm helper để suy ra hình thức làm việc từ địa điểm.
+func inferForm(location string) string {
+    lowerLoc := strings.ToLower(location)
+    if strings.Contains(lowerLoc, "remote") || strings.Contains(lowerLoc, "từ xa") {
+        return "Remote"
+    }
+    if lowerLoc != "" {
+        return "Fulltime"
+    }
+    return "N/A"
 }

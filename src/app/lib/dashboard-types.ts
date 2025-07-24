@@ -30,6 +30,7 @@ export interface JobData {
   form: string;
   trend: JobTrend;
   icon: React.ReactNode;
+   salaryText: string;
 }
 
 export interface FundItemData {

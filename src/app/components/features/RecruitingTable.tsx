@@ -10,88 +10,50 @@ import { useRecruitingData } from '@/app/hooks/useRecruitingData';
 import { type JobData, type JobField } from '@/app/lib/dashboard-types';
 
 
-// --- DỮ LIỆU VÀ KIỂU DỮ LIỆU ---
-type Field = 'Blockchain' | 'AI' | 'IOT' | 'Web Dev';
-type Trend = 'up' | 'down';
-interface RecruitData {
-  icon: React.ReactNode;
-  foundation: string;
-  position: string;
-  field: Field;
-  salary: number;
-  form: string;
-  trend: Trend;
-}
 
-const allRecruitingData: RecruitData[] = [
-  { icon: <SiNvidia size={24} className="text-gray-400"/>, foundation: 'Nvidia', position: 'Deep Learning Scientist', field: 'AI', salary: 55000.00, form: 'Remote', trend: 'up' },
-  { icon: <SiTesla size={24} className="text-gray-400"/>, foundation: 'Tesla', position: 'Firmware Engineer', field: 'IOT', salary: 45000.00, form: 'Fulltime', trend: 'up' },
-  { icon: <SiApple size={24} className="text-gray-400"/>, foundation: 'ConsenSys', position: 'Smart Contract Dev', field: 'Blockchain', salary: 42000.00, form: 'Fulltime', trend: 'down' },
-  { icon: <SiGoogle size={22} className="text-gray-400"/>, foundation: 'Google', position: 'Frontend Developer', field: 'Web Dev', salary: 38000.50, form: 'Fulltime', trend: 'up' },
-  { icon: <SiApple size={24} className="text-gray-400"/>, foundation: 'Apple', position: 'AI Research Intern', field: 'AI', salary: 32000.21, form: 'Remote', trend: 'down' },
-  { icon: <SiTesla size={24} className="text-gray-400"/>, foundation: 'FPT', position: 'Blockchain Engineer', field: 'Blockchain', salary: 26000.21, form: 'Fulltime', trend: 'up' },
-];
-
-const filters: ('All' | Field)[] = ['All', 'Blockchain', 'AI', 'IOT'];
+const filters: ('All' | JobField)[] = ['All', 'Blockchain', 'AI', 'IOT', 'Web Dev'];
 
 // --- COMPONENT CHÍNH ---
 const RecruitingTable = () => {
-  const [activeFilter, setActiveFilter] = useState<'All' | Field>('All');
-  const [sortConfig, setSortConfig] = useState<{ key: keyof RecruitData; direction: 'ascending' | 'descending' } | null>({ key: 'salary', direction: 'descending' });
-  const { jobs: allRecruitingData, isLoading, error, refetch } = useRecruitingData();
-
-// useEffect(() => {
-//     setIsLoading(true);
-//     const timer = setTimeout(() => {
-//       setIsLoading(false);
-//     }, 500); // Mô phỏng độ trễ 0.5s
-//     return () => clearTimeout(timer);
-//   }, [activeFilter, sortConfig]);
+  const [activeFilter, setActiveFilter] = useState<'All' | JobField>('All');
+  // ✨ SỬA LẠI: Mặc định sort theo Foundation thay vì salary (vì salary giờ là 0) ✨
+  const [sortConfig, setSortConfig] = useState<{ key: keyof JobData; direction: 'ascending' | 'descending' } | null>({ key: 'foundation', direction: 'ascending' });
+  
+  const { jobs, isLoading, error } = useRecruitingData();
 
   const filteredData = useMemo(() => {
-    if (!allRecruitingData) return [];
+    if (!jobs) return [];
     
-    let sortableItems = [...allRecruitingData];
+    let sortableItems = [...jobs];
     if (activeFilter !== 'All') {
       sortableItems = sortableItems.filter(item => item.field === activeFilter);
     }
     
-    // 👇 BỎ COMMENT VÀ HOÀN THIỆN LOGIC SORT Ở ĐÂY 👇
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
-        const aValue = a[sortConfig.key];
-        const bValue = b[sortConfig.key];
+        // ✨ SỬA LẠI `any` ĐỂ AN TOÀN HƠN VỚI TYPESCRIPT ✨
+        const aValue = a[sortConfig.key as keyof JobData] as any;
+        const bValue = b[sortConfig.key as keyof JobData] as any;
 
-        // Kiểm tra nếu là số để so sánh số, ngược lại so sánh chuỗi
         if (typeof aValue === 'number' && typeof bValue === 'number') {
-          if (aValue < bValue) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
-          }
-          if (aValue > bValue) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
-          }
+          if (aValue < bValue) return sortConfig.direction === 'ascending' ? -1 : 1;
+          if (aValue > bValue) return sortConfig.direction === 'ascending' ? 1 : -1;
         } else {
-          // So sánh chuỗi (đã chuyển về chữ thường để không phân biệt hoa/thường)
           const aStr = String(aValue).toLowerCase();
           const bStr = String(bValue).toLowerCase();
-          if (aStr < bStr) {
-            return sortConfig.direction === 'ascending' ? -1 : 1;
-          }
-          if (aStr > bStr) {
-            return sortConfig.direction === 'ascending' ? 1 : -1;
-          }
+          if (aStr < bStr) return sortConfig.direction === 'ascending' ? -1 : 1;
+          if (aStr > bStr) return sortConfig.direction === 'ascending' ? 1 : -1;
         }
-        
-        return 0; // Nếu bằng nhau
+        return 0;
       });
     }
-    // 👆 KẾT THÚC PHẦN SORT 👆
-
     return sortableItems;
-  }, [allRecruitingData, activeFilter, sortConfig]);
+  }, [jobs, activeFilter, sortConfig]);
 
   const requestSort = (key: keyof JobData) => {
-    if (key === 'trend' || key === 'icon' || key === 'id') return;
+    // Không cho phép sort theo các cột không có ý nghĩa
+    if (key === 'trend' || key === 'icon' || key === 'id' || key === 'salaryText') return; 
+    
     let direction: 'ascending' | 'descending' = 'ascending';
     if (sortConfig?.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
@@ -103,14 +65,14 @@ const RecruitingTable = () => {
     { label: 'Foundation', key: 'foundation' },
     { label: 'Job Position', key: 'position' },
     { label: 'Field', key: 'field' },
-    { label: 'Salary', key: 'salary' },
+    { label: 'Salary', key: 'salary' }, // Giữ nguyên key để sort, nhưng hiển thị salaryText
     { label: 'Form', key: 'form' },
     { label: 'Update', key: 'trend' },
   ];
 
   return (
     <WidgetCard>
-      <div className="flex flex-col h-60">
+      <div className="flex flex-col h-70">
         {/* Header Widget */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-white">Real-time recruiting</h2>
@@ -144,15 +106,39 @@ const RecruitingTable = () => {
               </div>
             ) : (
               // Hiển thị dữ liệu thật
-              filteredData.map((row, index) => (
-                <div key={`${row.foundation}-${index}`} className="grid grid-cols-6 gap-x-4 items-center p-4 border-b border-gray-800/60">
-                  <div className="flex items-center gap-x-3 text-white font-medium">
-                    {row.icon}<span>{row.foundation}</span>
+              filteredData.map((row) => (
+                <div key={row.id} className="grid grid-cols-6 gap-x-4 items-center p-4 h-20 border-b border-gray-800/60 last:border-b-0">
+                  
+                  {/* Cột 1: Foundation */}
+                  <div 
+                    className="flex items-center gap-x-3 text-white font-medium text-sm overflow-hidden" 
+                    title={row.foundation} // Thêm tooltip để xem tên đầy đủ khi di chuột
+                  >
+                    {row.icon}
+                    {/* Giới hạn 2 dòng và thêm dấu ... */}
+                    <span className="line-clamp-2">{row.foundation}</span> 
                   </div>
-                  <div className="text-white font-medium">{row.position}</div>
-                  <div className="text-gray-400">{row.field}</div>
-                  <div className="text-gray-400">${row.salary.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
-                  <div className="text-gray-400">{row.form}</div>
+                  
+                  {/* Cột 2: Job Position */}
+                  <div 
+                    className="text-white font-medium text-sm overflow-hidden"
+                    title={row.position} // Thêm tooltip
+                  >
+                    {/* Giới hạn 2 dòng và thêm dấu ... */}
+                    <span className="line-clamp-2">{row.position}</span>
+                  </div>
+                  
+                  {/* Cột 3: Field */}
+                  <div className="text-gray-400 text-sm">{row.field}</div>
+                  
+                  {/* Cột 4: Salary */}
+                  {/* `truncate` sẽ cắt bớt nếu không đủ chỗ */}
+                  <div className="text-gray-400 text-sm truncate" title={row.salaryText}>{row.salaryText}</div>
+                  
+                  {/* Cột 5: Form */}
+                  <div className="text-gray-400 text-sm">{row.form}</div>
+                  
+                  {/* Cột 6: Update */}
                   <div className="flex justify-start">
                     <MiniTrendChart trend={row.trend} />
                   </div>

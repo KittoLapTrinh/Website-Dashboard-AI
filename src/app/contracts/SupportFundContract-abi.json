@@ -72,64 +72,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_dayKey",
-				"type": "string"
-			},
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "price",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "iconId",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "count",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "avatarColor",
-						"type": "string"
-					}
-				],
-				"internalType": "struct DataStructs.FundItem[]",
-				"name": "_newItems",
-				"type": "tuple[]"
-			}
-		],
-		"name": "updateFundItemsForDay",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "string",
 				"name": "",
 				"type": "string"
@@ -228,6 +170,64 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_dayKey",
+				"type": "string"
+			},
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "iconId",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "count",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "avatarColor",
+						"type": "string"
+					}
+				],
+				"internalType": "struct DataStructs.FundItem[]",
+				"name": "_newItems",
+				"type": "tuple[]"
+			}
+		],
+		"name": "updateFundItemsForDay",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

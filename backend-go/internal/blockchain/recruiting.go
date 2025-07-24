@@ -38,11 +38,12 @@ type DataStructsJob struct {
 	Form       string
 	Trend      uint8
 	IconId     string
+	SalaryText string
 }
 
 // RecruitingContractMetaData contains all meta data concerning the RecruitingContract contract.
 var RecruitingContractMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"}],\"internalType\":\"structDataStructs.Job\",\"name\":\"_newJob\",\"type\":\"tuple\"}],\"name\":\"addJob\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"}],\"indexed\":false,\"internalType\":\"structDataStructs.Job\",\"name\":\"newJob\",\"type\":\"tuple\"}],\"name\":\"JobAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllJobs\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"}],\"internalType\":\"structDataStructs.Job[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"jobs\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"salaryText\",\"type\":\"string\"}],\"indexed\":false,\"internalType\":\"structDataStructs.Job\",\"name\":\"newJob\",\"type\":\"tuple\"}],\"name\":\"JobAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"inputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"salaryText\",\"type\":\"string\"}],\"internalType\":\"structDataStructs.Job\",\"name\":\"_newJob\",\"type\":\"tuple\"}],\"name\":\"addJob\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllJobs\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"salaryText\",\"type\":\"string\"}],\"internalType\":\"structDataStructs.Job[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"jobs\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"foundation\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"position\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"field\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"salary\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"form\",\"type\":\"string\"},{\"internalType\":\"enumDataStructs.JobTrend\",\"name\":\"trend\",\"type\":\"uint8\"},{\"internalType\":\"string\",\"name\":\"iconId\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"salaryText\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // RecruitingContractABI is the input ABI used to generate the binding from.
@@ -193,7 +194,7 @@ func (_RecruitingContract *RecruitingContractTransactorRaw) Transact(opts *bind.
 
 // GetAllJobs is a free data retrieval call binding the contract method 0x965a79fb.
 //
-// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string)[])
+// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string,string)[])
 func (_RecruitingContract *RecruitingContractCaller) GetAllJobs(opts *bind.CallOpts) ([]DataStructsJob, error) {
 	var out []interface{}
 	err := _RecruitingContract.contract.Call(opts, &out, "getAllJobs")
@@ -210,21 +211,21 @@ func (_RecruitingContract *RecruitingContractCaller) GetAllJobs(opts *bind.CallO
 
 // GetAllJobs is a free data retrieval call binding the contract method 0x965a79fb.
 //
-// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string)[])
+// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string,string)[])
 func (_RecruitingContract *RecruitingContractSession) GetAllJobs() ([]DataStructsJob, error) {
 	return _RecruitingContract.Contract.GetAllJobs(&_RecruitingContract.CallOpts)
 }
 
 // GetAllJobs is a free data retrieval call binding the contract method 0x965a79fb.
 //
-// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string)[])
+// Solidity: function getAllJobs() view returns((string,string,string,uint256,string,uint8,string,string)[])
 func (_RecruitingContract *RecruitingContractCallerSession) GetAllJobs() ([]DataStructsJob, error) {
 	return _RecruitingContract.Contract.GetAllJobs(&_RecruitingContract.CallOpts)
 }
 
 // Jobs is a free data retrieval call binding the contract method 0x180aedf3.
 //
-// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId)
+// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId, string salaryText)
 func (_RecruitingContract *RecruitingContractCaller) Jobs(opts *bind.CallOpts, arg0 *big.Int) (struct {
 	Foundation string
 	Position   string
@@ -233,6 +234,7 @@ func (_RecruitingContract *RecruitingContractCaller) Jobs(opts *bind.CallOpts, a
 	Form       string
 	Trend      uint8
 	IconId     string
+	SalaryText string
 }, error) {
 	var out []interface{}
 	err := _RecruitingContract.contract.Call(opts, &out, "jobs", arg0)
@@ -245,6 +247,7 @@ func (_RecruitingContract *RecruitingContractCaller) Jobs(opts *bind.CallOpts, a
 		Form       string
 		Trend      uint8
 		IconId     string
+		SalaryText string
 	})
 	if err != nil {
 		return *outstruct, err
@@ -257,6 +260,7 @@ func (_RecruitingContract *RecruitingContractCaller) Jobs(opts *bind.CallOpts, a
 	outstruct.Form = *abi.ConvertType(out[4], new(string)).(*string)
 	outstruct.Trend = *abi.ConvertType(out[5], new(uint8)).(*uint8)
 	outstruct.IconId = *abi.ConvertType(out[6], new(string)).(*string)
+	outstruct.SalaryText = *abi.ConvertType(out[7], new(string)).(*string)
 
 	return *outstruct, err
 
@@ -264,7 +268,7 @@ func (_RecruitingContract *RecruitingContractCaller) Jobs(opts *bind.CallOpts, a
 
 // Jobs is a free data retrieval call binding the contract method 0x180aedf3.
 //
-// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId)
+// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId, string salaryText)
 func (_RecruitingContract *RecruitingContractSession) Jobs(arg0 *big.Int) (struct {
 	Foundation string
 	Position   string
@@ -273,13 +277,14 @@ func (_RecruitingContract *RecruitingContractSession) Jobs(arg0 *big.Int) (struc
 	Form       string
 	Trend      uint8
 	IconId     string
+	SalaryText string
 }, error) {
 	return _RecruitingContract.Contract.Jobs(&_RecruitingContract.CallOpts, arg0)
 }
 
 // Jobs is a free data retrieval call binding the contract method 0x180aedf3.
 //
-// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId)
+// Solidity: function jobs(uint256 ) view returns(string foundation, string position, string field, uint256 salary, string form, uint8 trend, string iconId, string salaryText)
 func (_RecruitingContract *RecruitingContractCallerSession) Jobs(arg0 *big.Int) (struct {
 	Foundation string
 	Position   string
@@ -288,6 +293,7 @@ func (_RecruitingContract *RecruitingContractCallerSession) Jobs(arg0 *big.Int) 
 	Form       string
 	Trend      uint8
 	IconId     string
+	SalaryText string
 }, error) {
 	return _RecruitingContract.Contract.Jobs(&_RecruitingContract.CallOpts, arg0)
 }
@@ -323,23 +329,23 @@ func (_RecruitingContract *RecruitingContractCallerSession) Owner() (common.Addr
 	return _RecruitingContract.Contract.Owner(&_RecruitingContract.CallOpts)
 }
 
-// AddJob is a paid mutator transaction binding the contract method 0x29b44e58.
+// AddJob is a paid mutator transaction binding the contract method 0x8ffffd34.
 //
-// Solidity: function addJob((string,string,string,uint256,string,uint8,string) _newJob) returns()
+// Solidity: function addJob((string,string,string,uint256,string,uint8,string,string) _newJob) returns()
 func (_RecruitingContract *RecruitingContractTransactor) AddJob(opts *bind.TransactOpts, _newJob DataStructsJob) (*types.Transaction, error) {
 	return _RecruitingContract.contract.Transact(opts, "addJob", _newJob)
 }
 
-// AddJob is a paid mutator transaction binding the contract method 0x29b44e58.
+// AddJob is a paid mutator transaction binding the contract method 0x8ffffd34.
 //
-// Solidity: function addJob((string,string,string,uint256,string,uint8,string) _newJob) returns()
+// Solidity: function addJob((string,string,string,uint256,string,uint8,string,string) _newJob) returns()
 func (_RecruitingContract *RecruitingContractSession) AddJob(_newJob DataStructsJob) (*types.Transaction, error) {
 	return _RecruitingContract.Contract.AddJob(&_RecruitingContract.TransactOpts, _newJob)
 }
 
-// AddJob is a paid mutator transaction binding the contract method 0x29b44e58.
+// AddJob is a paid mutator transaction binding the contract method 0x8ffffd34.
 //
-// Solidity: function addJob((string,string,string,uint256,string,uint8,string) _newJob) returns()
+// Solidity: function addJob((string,string,string,uint256,string,uint8,string,string) _newJob) returns()
 func (_RecruitingContract *RecruitingContractTransactorSession) AddJob(_newJob DataStructsJob) (*types.Transaction, error) {
 	return _RecruitingContract.Contract.AddJob(&_RecruitingContract.TransactOpts, _newJob)
 }
@@ -438,9 +444,9 @@ type RecruitingContractJobAdded struct {
 	Raw    types.Log // Blockchain specific contextual infos
 }
 
-// FilterJobAdded is a free log retrieval operation binding the contract event 0xde0eae4446badd721c880f61c8e29849509fd7ced6259dcc27a46b2affa3329a.
+// FilterJobAdded is a free log retrieval operation binding the contract event 0x9a6eac57ba8058196686bd4d75183e37235dc6194ce53fce2c0f9c7e491d9413.
 //
-// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string) newJob)
+// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string,string) newJob)
 func (_RecruitingContract *RecruitingContractFilterer) FilterJobAdded(opts *bind.FilterOpts) (*RecruitingContractJobAddedIterator, error) {
 
 	logs, sub, err := _RecruitingContract.contract.FilterLogs(opts, "JobAdded")
@@ -450,9 +456,9 @@ func (_RecruitingContract *RecruitingContractFilterer) FilterJobAdded(opts *bind
 	return &RecruitingContractJobAddedIterator{contract: _RecruitingContract.contract, event: "JobAdded", logs: logs, sub: sub}, nil
 }
 
-// WatchJobAdded is a free log subscription operation binding the contract event 0xde0eae4446badd721c880f61c8e29849509fd7ced6259dcc27a46b2affa3329a.
+// WatchJobAdded is a free log subscription operation binding the contract event 0x9a6eac57ba8058196686bd4d75183e37235dc6194ce53fce2c0f9c7e491d9413.
 //
-// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string) newJob)
+// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string,string) newJob)
 func (_RecruitingContract *RecruitingContractFilterer) WatchJobAdded(opts *bind.WatchOpts, sink chan<- *RecruitingContractJobAdded) (event.Subscription, error) {
 
 	logs, sub, err := _RecruitingContract.contract.WatchLogs(opts, "JobAdded")
@@ -487,9 +493,9 @@ func (_RecruitingContract *RecruitingContractFilterer) WatchJobAdded(opts *bind.
 	}), nil
 }
 
-// ParseJobAdded is a log parse operation binding the contract event 0xde0eae4446badd721c880f61c8e29849509fd7ced6259dcc27a46b2affa3329a.
+// ParseJobAdded is a log parse operation binding the contract event 0x9a6eac57ba8058196686bd4d75183e37235dc6194ce53fce2c0f9c7e491d9413.
 //
-// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string) newJob)
+// Solidity: event JobAdded((string,string,string,uint256,string,uint8,string,string) newJob)
 func (_RecruitingContract *RecruitingContractFilterer) ParseJobAdded(log types.Log) (*RecruitingContractJobAdded, error) {
 	event := new(RecruitingContractJobAdded)
 	if err := _RecruitingContract.contract.UnpackLog(event, "JobAdded", log); err != nil {

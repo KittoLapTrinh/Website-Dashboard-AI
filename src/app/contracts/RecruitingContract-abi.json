@@ -1,55 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "string",
-						"name": "foundation",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "position",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "field",
-						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "salary",
-						"type": "uint256"
-					},
-					{
-						"internalType": "string",
-						"name": "form",
-						"type": "string"
-					},
-					{
-						"internalType": "enum DataStructs.JobTrend",
-						"name": "trend",
-						"type": "uint8"
-					},
-					{
-						"internalType": "string",
-						"name": "iconId",
-						"type": "string"
-					}
-				],
-				"internalType": "struct DataStructs.Job",
-				"name": "_newJob",
-				"type": "tuple"
-			}
-		],
-		"name": "addJob",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -93,6 +43,11 @@
 						"internalType": "string",
 						"name": "iconId",
 						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "salaryText",
+						"type": "string"
 					}
 				],
 				"indexed": false,
@@ -126,12 +81,54 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
+				"components": [
+					{
+						"internalType": "string",
+						"name": "foundation",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "position",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "field",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "salary",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "form",
+						"type": "string"
+					},
+					{
+						"internalType": "enum DataStructs.JobTrend",
+						"name": "trend",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "iconId",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "salaryText",
+						"type": "string"
+					}
+				],
+				"internalType": "struct DataStructs.Job",
+				"name": "_newJob",
+				"type": "tuple"
 			}
 		],
-		"name": "transferOwnership",
+		"name": "addJob",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -175,6 +172,11 @@
 					{
 						"internalType": "string",
 						"name": "iconId",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "salaryText",
 						"type": "string"
 					}
 				],
@@ -230,6 +232,11 @@
 				"internalType": "string",
 				"name": "iconId",
 				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "salaryText",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -246,6 +253,19 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

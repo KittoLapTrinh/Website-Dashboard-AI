@@ -14,7 +14,7 @@ import (
 type AllContracts struct {
 	ServiceStatus *ServiceStatusContract
 	Recruiting    *RecruitingContract
-	TimeSeries    *Blockchain // ✨ ĐÃ SỬA: Tên đúng là "Blockchain" ✨
+	TimeSeries    *TimeSeriesContract  // ✨ ĐÃ SỬA: Tên đúng là "Blockchain" ✨
 	KeyValue      *KeyValueContract
 	SupportFund   *SupportFundContract
 }
@@ -39,8 +39,8 @@ func LoadAllContracts(client *ethclient.Client) (*AllContracts, error) {
 
 	// 3. Load TimeSeriesContract (với tên đúng là Blockchain)
 	timeSeriesAddr := getContractEnvAddress("TIME_SERIES_CONTRACT_ADDRESS")
-	// ✨ ĐÃ SỬA: Gọi hàm NewBlockchain ✨
-	timeSeriesInstance, err := NewBlockchain(timeSeriesAddr, client)
+	// ✨ ĐÃ SỬA: Gọi hàm NewTimeSeriesContract ✨
+	timeSeriesInstance, err := NewTimeSeriesContract(timeSeriesAddr, client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to instantiate TimeSeries contract (as Blockchain): %w", err)
 	}

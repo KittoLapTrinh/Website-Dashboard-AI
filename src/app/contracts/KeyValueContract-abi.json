@@ -64,55 +64,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_key",
-				"type": "string"
-			},
-			{
-				"internalType": "int256",
-				"name": "_newValue",
-				"type": "int256"
-			}
-		],
-		"name": "updateReturnData",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_key",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_newValue",
-				"type": "uint256"
-			}
-		],
-		"name": "updateSingleValueData",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "string",
 				"name": "_key",
 				"type": "string"
@@ -197,6 +148,55 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_key",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "_newValue",
+				"type": "int256"
+			}
+		],
+		"name": "updateReturnData",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_key",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_newValue",
+				"type": "uint256"
+			}
+		],
+		"name": "updateSingleValueData",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

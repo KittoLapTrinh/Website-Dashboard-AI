@@ -36,113 +36,113 @@ type DataStructsDataPoint struct {
 	Change    *big.Int
 }
 
-// BlockchainMetaData contains all meta data concerning the Blockchain contract.
-var BlockchainMetaData = &bind.MetaData{
+// TimeSeriesContractMetaData contains all meta data concerning the TimeSeriesContract contract.
+var TimeSeriesContractMetaData = &bind.MetaData{
 	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"change\",\"type\":\"int256\"}],\"indexed\":false,\"internalType\":\"structDataStructs.DataPoint\",\"name\":\"newPoint\",\"type\":\"tuple\"}],\"name\":\"DataPointAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"previousOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"string\",\"name\":\"key\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"newSize\",\"type\":\"uint256\"}],\"name\":\"TimeSeriesReplaced\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_key\",\"type\":\"string\"}],\"name\":\"getTimeSeriesData\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"change\",\"type\":\"int256\"}],\"internalType\":\"structDataStructs.DataPoint[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_key\",\"type\":\"string\"}],\"name\":\"getTimeSeriesLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_key\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_count\",\"type\":\"uint256\"}],\"name\":\"getTimeSeriesSlice\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"change\",\"type\":\"int256\"}],\"internalType\":\"structDataStructs.DataPoint[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_key\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"_change\",\"type\":\"int256\"}],\"name\":\"pushDataPoint\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_key\",\"type\":\"string\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"change\",\"type\":\"int256\"}],\"internalType\":\"structDataStructs.DataPoint[]\",\"name\":\"_newData\",\"type\":\"tuple[]\"}],\"name\":\"replaceTimeSeries\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"timeSeriesData\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"int256\",\"name\":\"change\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
-// BlockchainABI is the input ABI used to generate the binding from.
-// Deprecated: Use BlockchainMetaData.ABI instead.
-var BlockchainABI = BlockchainMetaData.ABI
+// TimeSeriesContractABI is the input ABI used to generate the binding from.
+// Deprecated: Use TimeSeriesContractMetaData.ABI instead.
+var TimeSeriesContractABI = TimeSeriesContractMetaData.ABI
 
-// Blockchain is an auto generated Go binding around an Ethereum contract.
-type Blockchain struct {
-	BlockchainCaller     // Read-only binding to the contract
-	BlockchainTransactor // Write-only binding to the contract
-	BlockchainFilterer   // Log filterer for contract events
+// TimeSeriesContract is an auto generated Go binding around an Ethereum contract.
+type TimeSeriesContract struct {
+	TimeSeriesContractCaller     // Read-only binding to the contract
+	TimeSeriesContractTransactor // Write-only binding to the contract
+	TimeSeriesContractFilterer   // Log filterer for contract events
 }
 
-// BlockchainCaller is an auto generated read-only Go binding around an Ethereum contract.
-type BlockchainCaller struct {
+// TimeSeriesContractCaller is an auto generated read-only Go binding around an Ethereum contract.
+type TimeSeriesContractCaller struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// BlockchainTransactor is an auto generated write-only Go binding around an Ethereum contract.
-type BlockchainTransactor struct {
+// TimeSeriesContractTransactor is an auto generated write-only Go binding around an Ethereum contract.
+type TimeSeriesContractTransactor struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// BlockchainFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
-type BlockchainFilterer struct {
+// TimeSeriesContractFilterer is an auto generated log filtering Go binding around an Ethereum contract events.
+type TimeSeriesContractFilterer struct {
 	contract *bind.BoundContract // Generic contract wrapper for the low level calls
 }
 
-// BlockchainSession is an auto generated Go binding around an Ethereum contract,
+// TimeSeriesContractSession is an auto generated Go binding around an Ethereum contract,
 // with pre-set call and transact options.
-type BlockchainSession struct {
-	Contract     *Blockchain       // Generic contract binding to set the session for
-	CallOpts     bind.CallOpts     // Call options to use throughout this session
-	TransactOpts bind.TransactOpts // Transaction auth options to use throughout this session
+type TimeSeriesContractSession struct {
+	Contract     *TimeSeriesContract // Generic contract binding to set the session for
+	CallOpts     bind.CallOpts       // Call options to use throughout this session
+	TransactOpts bind.TransactOpts   // Transaction auth options to use throughout this session
 }
 
-// BlockchainCallerSession is an auto generated read-only Go binding around an Ethereum contract,
+// TimeSeriesContractCallerSession is an auto generated read-only Go binding around an Ethereum contract,
 // with pre-set call options.
-type BlockchainCallerSession struct {
-	Contract *BlockchainCaller // Generic contract caller binding to set the session for
-	CallOpts bind.CallOpts     // Call options to use throughout this session
+type TimeSeriesContractCallerSession struct {
+	Contract *TimeSeriesContractCaller // Generic contract caller binding to set the session for
+	CallOpts bind.CallOpts             // Call options to use throughout this session
 }
 
-// BlockchainTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
+// TimeSeriesContractTransactorSession is an auto generated write-only Go binding around an Ethereum contract,
 // with pre-set transact options.
-type BlockchainTransactorSession struct {
-	Contract     *BlockchainTransactor // Generic contract transactor binding to set the session for
-	TransactOpts bind.TransactOpts     // Transaction auth options to use throughout this session
+type TimeSeriesContractTransactorSession struct {
+	Contract     *TimeSeriesContractTransactor // Generic contract transactor binding to set the session for
+	TransactOpts bind.TransactOpts             // Transaction auth options to use throughout this session
 }
 
-// BlockchainRaw is an auto generated low-level Go binding around an Ethereum contract.
-type BlockchainRaw struct {
-	Contract *Blockchain // Generic contract binding to access the raw methods on
+// TimeSeriesContractRaw is an auto generated low-level Go binding around an Ethereum contract.
+type TimeSeriesContractRaw struct {
+	Contract *TimeSeriesContract // Generic contract binding to access the raw methods on
 }
 
-// BlockchainCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
-type BlockchainCallerRaw struct {
-	Contract *BlockchainCaller // Generic read-only contract binding to access the raw methods on
+// TimeSeriesContractCallerRaw is an auto generated low-level read-only Go binding around an Ethereum contract.
+type TimeSeriesContractCallerRaw struct {
+	Contract *TimeSeriesContractCaller // Generic read-only contract binding to access the raw methods on
 }
 
-// BlockchainTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
-type BlockchainTransactorRaw struct {
-	Contract *BlockchainTransactor // Generic write-only contract binding to access the raw methods on
+// TimeSeriesContractTransactorRaw is an auto generated low-level write-only Go binding around an Ethereum contract.
+type TimeSeriesContractTransactorRaw struct {
+	Contract *TimeSeriesContractTransactor // Generic write-only contract binding to access the raw methods on
 }
 
-// NewBlockchain creates a new instance of Blockchain, bound to a specific deployed contract.
-func NewBlockchain(address common.Address, backend bind.ContractBackend) (*Blockchain, error) {
-	contract, err := bindBlockchain(address, backend, backend, backend)
+// NewTimeSeriesContract creates a new instance of TimeSeriesContract, bound to a specific deployed contract.
+func NewTimeSeriesContract(address common.Address, backend bind.ContractBackend) (*TimeSeriesContract, error) {
+	contract, err := bindTimeSeriesContract(address, backend, backend, backend)
 	if err != nil {
 		return nil, err
 	}
-	return &Blockchain{BlockchainCaller: BlockchainCaller{contract: contract}, BlockchainTransactor: BlockchainTransactor{contract: contract}, BlockchainFilterer: BlockchainFilterer{contract: contract}}, nil
+	return &TimeSeriesContract{TimeSeriesContractCaller: TimeSeriesContractCaller{contract: contract}, TimeSeriesContractTransactor: TimeSeriesContractTransactor{contract: contract}, TimeSeriesContractFilterer: TimeSeriesContractFilterer{contract: contract}}, nil
 }
 
-// NewBlockchainCaller creates a new read-only instance of Blockchain, bound to a specific deployed contract.
-func NewBlockchainCaller(address common.Address, caller bind.ContractCaller) (*BlockchainCaller, error) {
-	contract, err := bindBlockchain(address, caller, nil, nil)
+// NewTimeSeriesContractCaller creates a new read-only instance of TimeSeriesContract, bound to a specific deployed contract.
+func NewTimeSeriesContractCaller(address common.Address, caller bind.ContractCaller) (*TimeSeriesContractCaller, error) {
+	contract, err := bindTimeSeriesContract(address, caller, nil, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainCaller{contract: contract}, nil
+	return &TimeSeriesContractCaller{contract: contract}, nil
 }
 
-// NewBlockchainTransactor creates a new write-only instance of Blockchain, bound to a specific deployed contract.
-func NewBlockchainTransactor(address common.Address, transactor bind.ContractTransactor) (*BlockchainTransactor, error) {
-	contract, err := bindBlockchain(address, nil, transactor, nil)
+// NewTimeSeriesContractTransactor creates a new write-only instance of TimeSeriesContract, bound to a specific deployed contract.
+func NewTimeSeriesContractTransactor(address common.Address, transactor bind.ContractTransactor) (*TimeSeriesContractTransactor, error) {
+	contract, err := bindTimeSeriesContract(address, nil, transactor, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainTransactor{contract: contract}, nil
+	return &TimeSeriesContractTransactor{contract: contract}, nil
 }
 
-// NewBlockchainFilterer creates a new log filterer instance of Blockchain, bound to a specific deployed contract.
-func NewBlockchainFilterer(address common.Address, filterer bind.ContractFilterer) (*BlockchainFilterer, error) {
-	contract, err := bindBlockchain(address, nil, nil, filterer)
+// NewTimeSeriesContractFilterer creates a new log filterer instance of TimeSeriesContract, bound to a specific deployed contract.
+func NewTimeSeriesContractFilterer(address common.Address, filterer bind.ContractFilterer) (*TimeSeriesContractFilterer, error) {
+	contract, err := bindTimeSeriesContract(address, nil, nil, filterer)
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainFilterer{contract: contract}, nil
+	return &TimeSeriesContractFilterer{contract: contract}, nil
 }
 
-// bindBlockchain binds a generic wrapper to an already deployed contract.
-func bindBlockchain(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
-	parsed, err := BlockchainMetaData.GetAbi()
+// bindTimeSeriesContract binds a generic wrapper to an already deployed contract.
+func bindTimeSeriesContract(address common.Address, caller bind.ContractCaller, transactor bind.ContractTransactor, filterer bind.ContractFilterer) (*bind.BoundContract, error) {
+	parsed, err := TimeSeriesContractMetaData.GetAbi()
 	if err != nil {
 		return nil, err
 	}
@@ -153,46 +153,46 @@ func bindBlockchain(address common.Address, caller bind.ContractCaller, transact
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_Blockchain *BlockchainRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _Blockchain.Contract.BlockchainCaller.contract.Call(opts, result, method, params...)
+func (_TimeSeriesContract *TimeSeriesContractRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+	return _TimeSeriesContract.Contract.TimeSeriesContractCaller.contract.Call(opts, result, method, params...)
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
-func (_Blockchain *BlockchainRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Blockchain.Contract.BlockchainTransactor.contract.Transfer(opts)
+func (_TimeSeriesContract *TimeSeriesContractRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.TimeSeriesContractTransactor.contract.Transfer(opts)
 }
 
 // Transact invokes the (paid) contract method with params as input values.
-func (_Blockchain *BlockchainRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _Blockchain.Contract.BlockchainTransactor.contract.Transact(opts, method, params...)
+func (_TimeSeriesContract *TimeSeriesContractRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.TimeSeriesContractTransactor.contract.Transact(opts, method, params...)
 }
 
 // Call invokes the (constant) contract method with params as input values and
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_Blockchain *BlockchainCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
-	return _Blockchain.Contract.contract.Call(opts, result, method, params...)
+func (_TimeSeriesContract *TimeSeriesContractCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+	return _TimeSeriesContract.Contract.contract.Call(opts, result, method, params...)
 }
 
 // Transfer initiates a plain transaction to move funds to the contract, calling
 // its default method if one is available.
-func (_Blockchain *BlockchainTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
-	return _Blockchain.Contract.contract.Transfer(opts)
+func (_TimeSeriesContract *TimeSeriesContractTransactorRaw) Transfer(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.contract.Transfer(opts)
 }
 
 // Transact invokes the (paid) contract method with params as input values.
-func (_Blockchain *BlockchainTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
-	return _Blockchain.Contract.contract.Transact(opts, method, params...)
+func (_TimeSeriesContract *TimeSeriesContractTransactorRaw) Transact(opts *bind.TransactOpts, method string, params ...interface{}) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.contract.Transact(opts, method, params...)
 }
 
 // GetTimeSeriesData is a free data retrieval call binding the contract method 0x7918f328.
 //
 // Solidity: function getTimeSeriesData(string _key) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainCaller) GetTimeSeriesData(opts *bind.CallOpts, _key string) ([]DataStructsDataPoint, error) {
+func (_TimeSeriesContract *TimeSeriesContractCaller) GetTimeSeriesData(opts *bind.CallOpts, _key string) ([]DataStructsDataPoint, error) {
 	var out []interface{}
-	err := _Blockchain.contract.Call(opts, &out, "getTimeSeriesData", _key)
+	err := _TimeSeriesContract.contract.Call(opts, &out, "getTimeSeriesData", _key)
 
 	if err != nil {
 		return *new([]DataStructsDataPoint), err
@@ -207,23 +207,23 @@ func (_Blockchain *BlockchainCaller) GetTimeSeriesData(opts *bind.CallOpts, _key
 // GetTimeSeriesData is a free data retrieval call binding the contract method 0x7918f328.
 //
 // Solidity: function getTimeSeriesData(string _key) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainSession) GetTimeSeriesData(_key string) ([]DataStructsDataPoint, error) {
-	return _Blockchain.Contract.GetTimeSeriesData(&_Blockchain.CallOpts, _key)
+func (_TimeSeriesContract *TimeSeriesContractSession) GetTimeSeriesData(_key string) ([]DataStructsDataPoint, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesData(&_TimeSeriesContract.CallOpts, _key)
 }
 
 // GetTimeSeriesData is a free data retrieval call binding the contract method 0x7918f328.
 //
 // Solidity: function getTimeSeriesData(string _key) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainCallerSession) GetTimeSeriesData(_key string) ([]DataStructsDataPoint, error) {
-	return _Blockchain.Contract.GetTimeSeriesData(&_Blockchain.CallOpts, _key)
+func (_TimeSeriesContract *TimeSeriesContractCallerSession) GetTimeSeriesData(_key string) ([]DataStructsDataPoint, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesData(&_TimeSeriesContract.CallOpts, _key)
 }
 
 // GetTimeSeriesLength is a free data retrieval call binding the contract method 0x4868686d.
 //
 // Solidity: function getTimeSeriesLength(string _key) view returns(uint256)
-func (_Blockchain *BlockchainCaller) GetTimeSeriesLength(opts *bind.CallOpts, _key string) (*big.Int, error) {
+func (_TimeSeriesContract *TimeSeriesContractCaller) GetTimeSeriesLength(opts *bind.CallOpts, _key string) (*big.Int, error) {
 	var out []interface{}
-	err := _Blockchain.contract.Call(opts, &out, "getTimeSeriesLength", _key)
+	err := _TimeSeriesContract.contract.Call(opts, &out, "getTimeSeriesLength", _key)
 
 	if err != nil {
 		return *new(*big.Int), err
@@ -238,23 +238,23 @@ func (_Blockchain *BlockchainCaller) GetTimeSeriesLength(opts *bind.CallOpts, _k
 // GetTimeSeriesLength is a free data retrieval call binding the contract method 0x4868686d.
 //
 // Solidity: function getTimeSeriesLength(string _key) view returns(uint256)
-func (_Blockchain *BlockchainSession) GetTimeSeriesLength(_key string) (*big.Int, error) {
-	return _Blockchain.Contract.GetTimeSeriesLength(&_Blockchain.CallOpts, _key)
+func (_TimeSeriesContract *TimeSeriesContractSession) GetTimeSeriesLength(_key string) (*big.Int, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesLength(&_TimeSeriesContract.CallOpts, _key)
 }
 
 // GetTimeSeriesLength is a free data retrieval call binding the contract method 0x4868686d.
 //
 // Solidity: function getTimeSeriesLength(string _key) view returns(uint256)
-func (_Blockchain *BlockchainCallerSession) GetTimeSeriesLength(_key string) (*big.Int, error) {
-	return _Blockchain.Contract.GetTimeSeriesLength(&_Blockchain.CallOpts, _key)
+func (_TimeSeriesContract *TimeSeriesContractCallerSession) GetTimeSeriesLength(_key string) (*big.Int, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesLength(&_TimeSeriesContract.CallOpts, _key)
 }
 
 // GetTimeSeriesSlice is a free data retrieval call binding the contract method 0x82800399.
 //
 // Solidity: function getTimeSeriesSlice(string _key, uint256 _startIndex, uint256 _count) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainCaller) GetTimeSeriesSlice(opts *bind.CallOpts, _key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
+func (_TimeSeriesContract *TimeSeriesContractCaller) GetTimeSeriesSlice(opts *bind.CallOpts, _key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
 	var out []interface{}
-	err := _Blockchain.contract.Call(opts, &out, "getTimeSeriesSlice", _key, _startIndex, _count)
+	err := _TimeSeriesContract.contract.Call(opts, &out, "getTimeSeriesSlice", _key, _startIndex, _count)
 
 	if err != nil {
 		return *new([]DataStructsDataPoint), err
@@ -269,23 +269,23 @@ func (_Blockchain *BlockchainCaller) GetTimeSeriesSlice(opts *bind.CallOpts, _ke
 // GetTimeSeriesSlice is a free data retrieval call binding the contract method 0x82800399.
 //
 // Solidity: function getTimeSeriesSlice(string _key, uint256 _startIndex, uint256 _count) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainSession) GetTimeSeriesSlice(_key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
-	return _Blockchain.Contract.GetTimeSeriesSlice(&_Blockchain.CallOpts, _key, _startIndex, _count)
+func (_TimeSeriesContract *TimeSeriesContractSession) GetTimeSeriesSlice(_key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesSlice(&_TimeSeriesContract.CallOpts, _key, _startIndex, _count)
 }
 
 // GetTimeSeriesSlice is a free data retrieval call binding the contract method 0x82800399.
 //
 // Solidity: function getTimeSeriesSlice(string _key, uint256 _startIndex, uint256 _count) view returns((uint256,uint256,int256)[])
-func (_Blockchain *BlockchainCallerSession) GetTimeSeriesSlice(_key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
-	return _Blockchain.Contract.GetTimeSeriesSlice(&_Blockchain.CallOpts, _key, _startIndex, _count)
+func (_TimeSeriesContract *TimeSeriesContractCallerSession) GetTimeSeriesSlice(_key string, _startIndex *big.Int, _count *big.Int) ([]DataStructsDataPoint, error) {
+	return _TimeSeriesContract.Contract.GetTimeSeriesSlice(&_TimeSeriesContract.CallOpts, _key, _startIndex, _count)
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Blockchain *BlockchainCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
+func (_TimeSeriesContract *TimeSeriesContractCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
 	var out []interface{}
-	err := _Blockchain.contract.Call(opts, &out, "owner")
+	err := _TimeSeriesContract.contract.Call(opts, &out, "owner")
 
 	if err != nil {
 		return *new(common.Address), err
@@ -300,27 +300,27 @@ func (_Blockchain *BlockchainCaller) Owner(opts *bind.CallOpts) (common.Address,
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Blockchain *BlockchainSession) Owner() (common.Address, error) {
-	return _Blockchain.Contract.Owner(&_Blockchain.CallOpts)
+func (_TimeSeriesContract *TimeSeriesContractSession) Owner() (common.Address, error) {
+	return _TimeSeriesContract.Contract.Owner(&_TimeSeriesContract.CallOpts)
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
 //
 // Solidity: function owner() view returns(address)
-func (_Blockchain *BlockchainCallerSession) Owner() (common.Address, error) {
-	return _Blockchain.Contract.Owner(&_Blockchain.CallOpts)
+func (_TimeSeriesContract *TimeSeriesContractCallerSession) Owner() (common.Address, error) {
+	return _TimeSeriesContract.Contract.Owner(&_TimeSeriesContract.CallOpts)
 }
 
 // TimeSeriesData is a free data retrieval call binding the contract method 0xf65d99aa.
 //
 // Solidity: function timeSeriesData(string , uint256 ) view returns(uint256 timestamp, uint256 value, int256 change)
-func (_Blockchain *BlockchainCaller) TimeSeriesData(opts *bind.CallOpts, arg0 string, arg1 *big.Int) (struct {
+func (_TimeSeriesContract *TimeSeriesContractCaller) TimeSeriesData(opts *bind.CallOpts, arg0 string, arg1 *big.Int) (struct {
 	Timestamp *big.Int
 	Value     *big.Int
 	Change    *big.Int
 }, error) {
 	var out []interface{}
-	err := _Blockchain.contract.Call(opts, &out, "timeSeriesData", arg0, arg1)
+	err := _TimeSeriesContract.contract.Call(opts, &out, "timeSeriesData", arg0, arg1)
 
 	outstruct := new(struct {
 		Timestamp *big.Int
@@ -342,91 +342,91 @@ func (_Blockchain *BlockchainCaller) TimeSeriesData(opts *bind.CallOpts, arg0 st
 // TimeSeriesData is a free data retrieval call binding the contract method 0xf65d99aa.
 //
 // Solidity: function timeSeriesData(string , uint256 ) view returns(uint256 timestamp, uint256 value, int256 change)
-func (_Blockchain *BlockchainSession) TimeSeriesData(arg0 string, arg1 *big.Int) (struct {
+func (_TimeSeriesContract *TimeSeriesContractSession) TimeSeriesData(arg0 string, arg1 *big.Int) (struct {
 	Timestamp *big.Int
 	Value     *big.Int
 	Change    *big.Int
 }, error) {
-	return _Blockchain.Contract.TimeSeriesData(&_Blockchain.CallOpts, arg0, arg1)
+	return _TimeSeriesContract.Contract.TimeSeriesData(&_TimeSeriesContract.CallOpts, arg0, arg1)
 }
 
 // TimeSeriesData is a free data retrieval call binding the contract method 0xf65d99aa.
 //
 // Solidity: function timeSeriesData(string , uint256 ) view returns(uint256 timestamp, uint256 value, int256 change)
-func (_Blockchain *BlockchainCallerSession) TimeSeriesData(arg0 string, arg1 *big.Int) (struct {
+func (_TimeSeriesContract *TimeSeriesContractCallerSession) TimeSeriesData(arg0 string, arg1 *big.Int) (struct {
 	Timestamp *big.Int
 	Value     *big.Int
 	Change    *big.Int
 }, error) {
-	return _Blockchain.Contract.TimeSeriesData(&_Blockchain.CallOpts, arg0, arg1)
+	return _TimeSeriesContract.Contract.TimeSeriesData(&_TimeSeriesContract.CallOpts, arg0, arg1)
 }
 
 // PushDataPoint is a paid mutator transaction binding the contract method 0x53bfac46.
 //
 // Solidity: function pushDataPoint(string _key, uint256 _value, int256 _change) returns()
-func (_Blockchain *BlockchainTransactor) PushDataPoint(opts *bind.TransactOpts, _key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
-	return _Blockchain.contract.Transact(opts, "pushDataPoint", _key, _value, _change)
+func (_TimeSeriesContract *TimeSeriesContractTransactor) PushDataPoint(opts *bind.TransactOpts, _key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
+	return _TimeSeriesContract.contract.Transact(opts, "pushDataPoint", _key, _value, _change)
 }
 
 // PushDataPoint is a paid mutator transaction binding the contract method 0x53bfac46.
 //
 // Solidity: function pushDataPoint(string _key, uint256 _value, int256 _change) returns()
-func (_Blockchain *BlockchainSession) PushDataPoint(_key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
-	return _Blockchain.Contract.PushDataPoint(&_Blockchain.TransactOpts, _key, _value, _change)
+func (_TimeSeriesContract *TimeSeriesContractSession) PushDataPoint(_key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.PushDataPoint(&_TimeSeriesContract.TransactOpts, _key, _value, _change)
 }
 
 // PushDataPoint is a paid mutator transaction binding the contract method 0x53bfac46.
 //
 // Solidity: function pushDataPoint(string _key, uint256 _value, int256 _change) returns()
-func (_Blockchain *BlockchainTransactorSession) PushDataPoint(_key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
-	return _Blockchain.Contract.PushDataPoint(&_Blockchain.TransactOpts, _key, _value, _change)
+func (_TimeSeriesContract *TimeSeriesContractTransactorSession) PushDataPoint(_key string, _value *big.Int, _change *big.Int) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.PushDataPoint(&_TimeSeriesContract.TransactOpts, _key, _value, _change)
 }
 
 // ReplaceTimeSeries is a paid mutator transaction binding the contract method 0xa2a0ff2c.
 //
 // Solidity: function replaceTimeSeries(string _key, (uint256,uint256,int256)[] _newData) returns()
-func (_Blockchain *BlockchainTransactor) ReplaceTimeSeries(opts *bind.TransactOpts, _key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
-	return _Blockchain.contract.Transact(opts, "replaceTimeSeries", _key, _newData)
+func (_TimeSeriesContract *TimeSeriesContractTransactor) ReplaceTimeSeries(opts *bind.TransactOpts, _key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
+	return _TimeSeriesContract.contract.Transact(opts, "replaceTimeSeries", _key, _newData)
 }
 
 // ReplaceTimeSeries is a paid mutator transaction binding the contract method 0xa2a0ff2c.
 //
 // Solidity: function replaceTimeSeries(string _key, (uint256,uint256,int256)[] _newData) returns()
-func (_Blockchain *BlockchainSession) ReplaceTimeSeries(_key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
-	return _Blockchain.Contract.ReplaceTimeSeries(&_Blockchain.TransactOpts, _key, _newData)
+func (_TimeSeriesContract *TimeSeriesContractSession) ReplaceTimeSeries(_key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.ReplaceTimeSeries(&_TimeSeriesContract.TransactOpts, _key, _newData)
 }
 
 // ReplaceTimeSeries is a paid mutator transaction binding the contract method 0xa2a0ff2c.
 //
 // Solidity: function replaceTimeSeries(string _key, (uint256,uint256,int256)[] _newData) returns()
-func (_Blockchain *BlockchainTransactorSession) ReplaceTimeSeries(_key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
-	return _Blockchain.Contract.ReplaceTimeSeries(&_Blockchain.TransactOpts, _key, _newData)
+func (_TimeSeriesContract *TimeSeriesContractTransactorSession) ReplaceTimeSeries(_key string, _newData []DataStructsDataPoint) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.ReplaceTimeSeries(&_TimeSeriesContract.TransactOpts, _key, _newData)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Blockchain *BlockchainTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
-	return _Blockchain.contract.Transact(opts, "transferOwnership", newOwner)
+func (_TimeSeriesContract *TimeSeriesContractTransactor) TransferOwnership(opts *bind.TransactOpts, newOwner common.Address) (*types.Transaction, error) {
+	return _TimeSeriesContract.contract.Transact(opts, "transferOwnership", newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Blockchain *BlockchainSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _Blockchain.Contract.TransferOwnership(&_Blockchain.TransactOpts, newOwner)
+func (_TimeSeriesContract *TimeSeriesContractSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.TransferOwnership(&_TimeSeriesContract.TransactOpts, newOwner)
 }
 
 // TransferOwnership is a paid mutator transaction binding the contract method 0xf2fde38b.
 //
 // Solidity: function transferOwnership(address newOwner) returns()
-func (_Blockchain *BlockchainTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
-	return _Blockchain.Contract.TransferOwnership(&_Blockchain.TransactOpts, newOwner)
+func (_TimeSeriesContract *TimeSeriesContractTransactorSession) TransferOwnership(newOwner common.Address) (*types.Transaction, error) {
+	return _TimeSeriesContract.Contract.TransferOwnership(&_TimeSeriesContract.TransactOpts, newOwner)
 }
 
-// BlockchainDataPointAddedIterator is returned from FilterDataPointAdded and is used to iterate over the raw logs and unpacked data for DataPointAdded events raised by the Blockchain contract.
-type BlockchainDataPointAddedIterator struct {
-	Event *BlockchainDataPointAdded // Event containing the contract specifics and raw log
+// TimeSeriesContractDataPointAddedIterator is returned from FilterDataPointAdded and is used to iterate over the raw logs and unpacked data for DataPointAdded events raised by the TimeSeriesContract contract.
+type TimeSeriesContractDataPointAddedIterator struct {
+	Event *TimeSeriesContractDataPointAdded // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -440,7 +440,7 @@ type BlockchainDataPointAddedIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *BlockchainDataPointAddedIterator) Next() bool {
+func (it *TimeSeriesContractDataPointAddedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -449,7 +449,7 @@ func (it *BlockchainDataPointAddedIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(BlockchainDataPointAdded)
+			it.Event = new(TimeSeriesContractDataPointAdded)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -464,7 +464,7 @@ func (it *BlockchainDataPointAddedIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(BlockchainDataPointAdded)
+		it.Event = new(TimeSeriesContractDataPointAdded)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -480,19 +480,19 @@ func (it *BlockchainDataPointAddedIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *BlockchainDataPointAddedIterator) Error() error {
+func (it *TimeSeriesContractDataPointAddedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *BlockchainDataPointAddedIterator) Close() error {
+func (it *TimeSeriesContractDataPointAddedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// BlockchainDataPointAdded represents a DataPointAdded event raised by the Blockchain contract.
-type BlockchainDataPointAdded struct {
+// TimeSeriesContractDataPointAdded represents a DataPointAdded event raised by the TimeSeriesContract contract.
+type TimeSeriesContractDataPointAdded struct {
 	Key      string
 	NewPoint DataStructsDataPoint
 	Raw      types.Log // Blockchain specific contextual infos
@@ -501,21 +501,21 @@ type BlockchainDataPointAdded struct {
 // FilterDataPointAdded is a free log retrieval operation binding the contract event 0x2f533650ae9e5d5131aa36c8d5548a73369e2ea487dc351fcce0fcf93710a6d4.
 //
 // Solidity: event DataPointAdded(string key, (uint256,uint256,int256) newPoint)
-func (_Blockchain *BlockchainFilterer) FilterDataPointAdded(opts *bind.FilterOpts) (*BlockchainDataPointAddedIterator, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) FilterDataPointAdded(opts *bind.FilterOpts) (*TimeSeriesContractDataPointAddedIterator, error) {
 
-	logs, sub, err := _Blockchain.contract.FilterLogs(opts, "DataPointAdded")
+	logs, sub, err := _TimeSeriesContract.contract.FilterLogs(opts, "DataPointAdded")
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainDataPointAddedIterator{contract: _Blockchain.contract, event: "DataPointAdded", logs: logs, sub: sub}, nil
+	return &TimeSeriesContractDataPointAddedIterator{contract: _TimeSeriesContract.contract, event: "DataPointAdded", logs: logs, sub: sub}, nil
 }
 
 // WatchDataPointAdded is a free log subscription operation binding the contract event 0x2f533650ae9e5d5131aa36c8d5548a73369e2ea487dc351fcce0fcf93710a6d4.
 //
 // Solidity: event DataPointAdded(string key, (uint256,uint256,int256) newPoint)
-func (_Blockchain *BlockchainFilterer) WatchDataPointAdded(opts *bind.WatchOpts, sink chan<- *BlockchainDataPointAdded) (event.Subscription, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) WatchDataPointAdded(opts *bind.WatchOpts, sink chan<- *TimeSeriesContractDataPointAdded) (event.Subscription, error) {
 
-	logs, sub, err := _Blockchain.contract.WatchLogs(opts, "DataPointAdded")
+	logs, sub, err := _TimeSeriesContract.contract.WatchLogs(opts, "DataPointAdded")
 	if err != nil {
 		return nil, err
 	}
@@ -525,8 +525,8 @@ func (_Blockchain *BlockchainFilterer) WatchDataPointAdded(opts *bind.WatchOpts,
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(BlockchainDataPointAdded)
-				if err := _Blockchain.contract.UnpackLog(event, "DataPointAdded", log); err != nil {
+				event := new(TimeSeriesContractDataPointAdded)
+				if err := _TimeSeriesContract.contract.UnpackLog(event, "DataPointAdded", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -550,18 +550,18 @@ func (_Blockchain *BlockchainFilterer) WatchDataPointAdded(opts *bind.WatchOpts,
 // ParseDataPointAdded is a log parse operation binding the contract event 0x2f533650ae9e5d5131aa36c8d5548a73369e2ea487dc351fcce0fcf93710a6d4.
 //
 // Solidity: event DataPointAdded(string key, (uint256,uint256,int256) newPoint)
-func (_Blockchain *BlockchainFilterer) ParseDataPointAdded(log types.Log) (*BlockchainDataPointAdded, error) {
-	event := new(BlockchainDataPointAdded)
-	if err := _Blockchain.contract.UnpackLog(event, "DataPointAdded", log); err != nil {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) ParseDataPointAdded(log types.Log) (*TimeSeriesContractDataPointAdded, error) {
+	event := new(TimeSeriesContractDataPointAdded)
+	if err := _TimeSeriesContract.contract.UnpackLog(event, "DataPointAdded", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// BlockchainOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the Blockchain contract.
-type BlockchainOwnershipTransferredIterator struct {
-	Event *BlockchainOwnershipTransferred // Event containing the contract specifics and raw log
+// TimeSeriesContractOwnershipTransferredIterator is returned from FilterOwnershipTransferred and is used to iterate over the raw logs and unpacked data for OwnershipTransferred events raised by the TimeSeriesContract contract.
+type TimeSeriesContractOwnershipTransferredIterator struct {
+	Event *TimeSeriesContractOwnershipTransferred // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -575,7 +575,7 @@ type BlockchainOwnershipTransferredIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *BlockchainOwnershipTransferredIterator) Next() bool {
+func (it *TimeSeriesContractOwnershipTransferredIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -584,7 +584,7 @@ func (it *BlockchainOwnershipTransferredIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(BlockchainOwnershipTransferred)
+			it.Event = new(TimeSeriesContractOwnershipTransferred)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -599,7 +599,7 @@ func (it *BlockchainOwnershipTransferredIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(BlockchainOwnershipTransferred)
+		it.Event = new(TimeSeriesContractOwnershipTransferred)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -615,19 +615,19 @@ func (it *BlockchainOwnershipTransferredIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *BlockchainOwnershipTransferredIterator) Error() error {
+func (it *TimeSeriesContractOwnershipTransferredIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *BlockchainOwnershipTransferredIterator) Close() error {
+func (it *TimeSeriesContractOwnershipTransferredIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// BlockchainOwnershipTransferred represents a OwnershipTransferred event raised by the Blockchain contract.
-type BlockchainOwnershipTransferred struct {
+// TimeSeriesContractOwnershipTransferred represents a OwnershipTransferred event raised by the TimeSeriesContract contract.
+type TimeSeriesContractOwnershipTransferred struct {
 	PreviousOwner common.Address
 	NewOwner      common.Address
 	Raw           types.Log // Blockchain specific contextual infos
@@ -636,7 +636,7 @@ type BlockchainOwnershipTransferred struct {
 // FilterOwnershipTransferred is a free log retrieval operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Blockchain *BlockchainFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*BlockchainOwnershipTransferredIterator, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) FilterOwnershipTransferred(opts *bind.FilterOpts, previousOwner []common.Address, newOwner []common.Address) (*TimeSeriesContractOwnershipTransferredIterator, error) {
 
 	var previousOwnerRule []interface{}
 	for _, previousOwnerItem := range previousOwner {
@@ -647,17 +647,17 @@ func (_Blockchain *BlockchainFilterer) FilterOwnershipTransferred(opts *bind.Fil
 		newOwnerRule = append(newOwnerRule, newOwnerItem)
 	}
 
-	logs, sub, err := _Blockchain.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _TimeSeriesContract.contract.FilterLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainOwnershipTransferredIterator{contract: _Blockchain.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
+	return &TimeSeriesContractOwnershipTransferredIterator{contract: _TimeSeriesContract.contract, event: "OwnershipTransferred", logs: logs, sub: sub}, nil
 }
 
 // WatchOwnershipTransferred is a free log subscription operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Blockchain *BlockchainFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *BlockchainOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) WatchOwnershipTransferred(opts *bind.WatchOpts, sink chan<- *TimeSeriesContractOwnershipTransferred, previousOwner []common.Address, newOwner []common.Address) (event.Subscription, error) {
 
 	var previousOwnerRule []interface{}
 	for _, previousOwnerItem := range previousOwner {
@@ -668,7 +668,7 @@ func (_Blockchain *BlockchainFilterer) WatchOwnershipTransferred(opts *bind.Watc
 		newOwnerRule = append(newOwnerRule, newOwnerItem)
 	}
 
-	logs, sub, err := _Blockchain.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
+	logs, sub, err := _TimeSeriesContract.contract.WatchLogs(opts, "OwnershipTransferred", previousOwnerRule, newOwnerRule)
 	if err != nil {
 		return nil, err
 	}
@@ -678,8 +678,8 @@ func (_Blockchain *BlockchainFilterer) WatchOwnershipTransferred(opts *bind.Watc
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(BlockchainOwnershipTransferred)
-				if err := _Blockchain.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+				event := new(TimeSeriesContractOwnershipTransferred)
+				if err := _TimeSeriesContract.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -703,18 +703,18 @@ func (_Blockchain *BlockchainFilterer) WatchOwnershipTransferred(opts *bind.Watc
 // ParseOwnershipTransferred is a log parse operation binding the contract event 0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0.
 //
 // Solidity: event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
-func (_Blockchain *BlockchainFilterer) ParseOwnershipTransferred(log types.Log) (*BlockchainOwnershipTransferred, error) {
-	event := new(BlockchainOwnershipTransferred)
-	if err := _Blockchain.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) ParseOwnershipTransferred(log types.Log) (*TimeSeriesContractOwnershipTransferred, error) {
+	event := new(TimeSeriesContractOwnershipTransferred)
+	if err := _TimeSeriesContract.contract.UnpackLog(event, "OwnershipTransferred", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
 	return event, nil
 }
 
-// BlockchainTimeSeriesReplacedIterator is returned from FilterTimeSeriesReplaced and is used to iterate over the raw logs and unpacked data for TimeSeriesReplaced events raised by the Blockchain contract.
-type BlockchainTimeSeriesReplacedIterator struct {
-	Event *BlockchainTimeSeriesReplaced // Event containing the contract specifics and raw log
+// TimeSeriesContractTimeSeriesReplacedIterator is returned from FilterTimeSeriesReplaced and is used to iterate over the raw logs and unpacked data for TimeSeriesReplaced events raised by the TimeSeriesContract contract.
+type TimeSeriesContractTimeSeriesReplacedIterator struct {
+	Event *TimeSeriesContractTimeSeriesReplaced // Event containing the contract specifics and raw log
 
 	contract *bind.BoundContract // Generic contract to use for unpacking event data
 	event    string              // Event name to use for unpacking event data
@@ -728,7 +728,7 @@ type BlockchainTimeSeriesReplacedIterator struct {
 // Next advances the iterator to the subsequent event, returning whether there
 // are any more events found. In case of a retrieval or parsing error, false is
 // returned and Error() can be queried for the exact failure.
-func (it *BlockchainTimeSeriesReplacedIterator) Next() bool {
+func (it *TimeSeriesContractTimeSeriesReplacedIterator) Next() bool {
 	// If the iterator failed, stop iterating
 	if it.fail != nil {
 		return false
@@ -737,7 +737,7 @@ func (it *BlockchainTimeSeriesReplacedIterator) Next() bool {
 	if it.done {
 		select {
 		case log := <-it.logs:
-			it.Event = new(BlockchainTimeSeriesReplaced)
+			it.Event = new(TimeSeriesContractTimeSeriesReplaced)
 			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 				it.fail = err
 				return false
@@ -752,7 +752,7 @@ func (it *BlockchainTimeSeriesReplacedIterator) Next() bool {
 	// Iterator still in progress, wait for either a data or an error event
 	select {
 	case log := <-it.logs:
-		it.Event = new(BlockchainTimeSeriesReplaced)
+		it.Event = new(TimeSeriesContractTimeSeriesReplaced)
 		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
 			it.fail = err
 			return false
@@ -768,19 +768,19 @@ func (it *BlockchainTimeSeriesReplacedIterator) Next() bool {
 }
 
 // Error returns any retrieval or parsing error occurred during filtering.
-func (it *BlockchainTimeSeriesReplacedIterator) Error() error {
+func (it *TimeSeriesContractTimeSeriesReplacedIterator) Error() error {
 	return it.fail
 }
 
 // Close terminates the iteration process, releasing any pending underlying
 // resources.
-func (it *BlockchainTimeSeriesReplacedIterator) Close() error {
+func (it *TimeSeriesContractTimeSeriesReplacedIterator) Close() error {
 	it.sub.Unsubscribe()
 	return nil
 }
 
-// BlockchainTimeSeriesReplaced represents a TimeSeriesReplaced event raised by the Blockchain contract.
-type BlockchainTimeSeriesReplaced struct {
+// TimeSeriesContractTimeSeriesReplaced represents a TimeSeriesReplaced event raised by the TimeSeriesContract contract.
+type TimeSeriesContractTimeSeriesReplaced struct {
 	Key     string
 	NewSize *big.Int
 	Raw     types.Log // Blockchain specific contextual infos
@@ -789,21 +789,21 @@ type BlockchainTimeSeriesReplaced struct {
 // FilterTimeSeriesReplaced is a free log retrieval operation binding the contract event 0xce9f244d6a6ca82290b92e737914a33cf9ba8c857e20fbe458ca9be02af6fd02.
 //
 // Solidity: event TimeSeriesReplaced(string key, uint256 newSize)
-func (_Blockchain *BlockchainFilterer) FilterTimeSeriesReplaced(opts *bind.FilterOpts) (*BlockchainTimeSeriesReplacedIterator, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) FilterTimeSeriesReplaced(opts *bind.FilterOpts) (*TimeSeriesContractTimeSeriesReplacedIterator, error) {
 
-	logs, sub, err := _Blockchain.contract.FilterLogs(opts, "TimeSeriesReplaced")
+	logs, sub, err := _TimeSeriesContract.contract.FilterLogs(opts, "TimeSeriesReplaced")
 	if err != nil {
 		return nil, err
 	}
-	return &BlockchainTimeSeriesReplacedIterator{contract: _Blockchain.contract, event: "TimeSeriesReplaced", logs: logs, sub: sub}, nil
+	return &TimeSeriesContractTimeSeriesReplacedIterator{contract: _TimeSeriesContract.contract, event: "TimeSeriesReplaced", logs: logs, sub: sub}, nil
 }
 
 // WatchTimeSeriesReplaced is a free log subscription operation binding the contract event 0xce9f244d6a6ca82290b92e737914a33cf9ba8c857e20fbe458ca9be02af6fd02.
 //
 // Solidity: event TimeSeriesReplaced(string key, uint256 newSize)
-func (_Blockchain *BlockchainFilterer) WatchTimeSeriesReplaced(opts *bind.WatchOpts, sink chan<- *BlockchainTimeSeriesReplaced) (event.Subscription, error) {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) WatchTimeSeriesReplaced(opts *bind.WatchOpts, sink chan<- *TimeSeriesContractTimeSeriesReplaced) (event.Subscription, error) {
 
-	logs, sub, err := _Blockchain.contract.WatchLogs(opts, "TimeSeriesReplaced")
+	logs, sub, err := _TimeSeriesContract.contract.WatchLogs(opts, "TimeSeriesReplaced")
 	if err != nil {
 		return nil, err
 	}
@@ -813,8 +813,8 @@ func (_Blockchain *BlockchainFilterer) WatchTimeSeriesReplaced(opts *bind.WatchO
 			select {
 			case log := <-logs:
 				// New log arrived, parse the event and forward to the user
-				event := new(BlockchainTimeSeriesReplaced)
-				if err := _Blockchain.contract.UnpackLog(event, "TimeSeriesReplaced", log); err != nil {
+				event := new(TimeSeriesContractTimeSeriesReplaced)
+				if err := _TimeSeriesContract.contract.UnpackLog(event, "TimeSeriesReplaced", log); err != nil {
 					return err
 				}
 				event.Raw = log
@@ -838,9 +838,9 @@ func (_Blockchain *BlockchainFilterer) WatchTimeSeriesReplaced(opts *bind.WatchO
 // ParseTimeSeriesReplaced is a log parse operation binding the contract event 0xce9f244d6a6ca82290b92e737914a33cf9ba8c857e20fbe458ca9be02af6fd02.
 //
 // Solidity: event TimeSeriesReplaced(string key, uint256 newSize)
-func (_Blockchain *BlockchainFilterer) ParseTimeSeriesReplaced(log types.Log) (*BlockchainTimeSeriesReplaced, error) {
-	event := new(BlockchainTimeSeriesReplaced)
-	if err := _Blockchain.contract.UnpackLog(event, "TimeSeriesReplaced", log); err != nil {
+func (_TimeSeriesContract *TimeSeriesContractFilterer) ParseTimeSeriesReplaced(log types.Log) (*TimeSeriesContractTimeSeriesReplaced, error) {
+	event := new(TimeSeriesContractTimeSeriesReplaced)
+	if err := _TimeSeriesContract.contract.UnpackLog(event, "TimeSeriesReplaced", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

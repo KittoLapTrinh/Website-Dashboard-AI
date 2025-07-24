@@ -44,6 +44,11 @@
 						"internalType": "string",
 						"name": "iconId",
 						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "salaryText",
+						"type": "string"
 					}
 				],
 				"internalType": "struct DataStructs.Job[]",
