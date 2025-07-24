@@ -8,7 +8,6 @@ import { ClientOnly } from '@/app/components/helpers/ClientOnly';
 import { type DataPoint } from '@/app/lib/dashboard-types';
 import { useProfileOverviewData } from '@/app/hooks/useProfileOverviewData';
 
-
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     const dataPoint: DataPoint = payload[0].payload;
@@ -56,16 +55,42 @@ const ProfileOverview = () => {
   const timeFilters: TimeFilterType[] = ['1D', '1W', '1M', '6M', '1Y'];
   const [activeFilter, setActiveFilter] = useState<TimeFilterType>('6M');
   
-  // ✨ GỌI HOOK ĐỂ LẤY DỮ LIỆU TỪ BLOCKCHAIN
   const { data, isLoading, error, refetch } = useProfileOverviewData(activeFilter);
 
   const formatYAxis = (tickItem: number) => tickItem > 0 ? `${Math.round(tickItem / 1000)}k` : '0';
   
-  let xAxisInterval: number | 'preserveStartEnd' = 'preserveStartEnd';
-  if (activeFilter === '6M') xAxisInterval = 2;
-  else if (activeFilter === '1M') xAxisInterval = 6;
-  else if (activeFilter === '1D') xAxisInterval = 3;
+  // ✨ --- LOGIC TÍNH TOÁN KHOẢNG CÁCH NHÃN TỰ ĐỘNG --- ✨
+  // Biến này sẽ quyết định `recharts` hiển thị nhãn trục X cách nhau bao xa.
+  let xAxisInterval: number | 'preserveStartEnd' = 0; // Mặc định là 0 (hiển thị tất cả)
 
+  // Chỉ tính toán lại interval khi có dữ liệu và dữ liệu đủ lớn để gây chồng chéo
+  if (data && data.length > 10) { 
+      switch (activeFilter) {
+          case '1D':
+              // Với khung 1 ngày, nếu có 100 điểm, ta chỉ hiển thị ~10-12 nhãn
+              xAxisInterval = Math.floor(data.length / 10); 
+              break;
+          case '1W':
+              // Chỉ hiển thị nhãn đầu tiên và cuối cùng của tuần
+              xAxisInterval = 'preserveStartEnd';
+              break;
+          case '1M':
+              // Hiển thị khoảng 4-5 nhãn (tương ứng mỗi tuần 1 lần)
+              xAxisInterval = Math.floor(data.length / 4);
+              break;
+          case '6M':
+              // Hiển thị khoảng 6 nhãn (tương ứng mỗi tháng 1 lần)
+              xAxisInterval = Math.floor(data.length / 6);
+              break;
+          case '1Y':
+              // Hiển thị khoảng 12 nhãn (tương ứng mỗi tháng 1 lần)
+              xAxisInterval = Math.floor(data.length / 12);
+              break;
+          default:
+              xAxisInterval = 0; // Fallback an toàn
+      }
+  }
+  
   return (
     <WidgetCard>
       <div className="flex flex-col h-full">
@@ -84,7 +109,7 @@ const ProfileOverview = () => {
             ))}
           </div>
         </div>
-          <div className="flex-grow mt-4 h-72 flex items-center justify-center">
+        <div className="flex-grow mt-4 h-72 flex items-center justify-center">
           {isLoading ? (
             <Loader2 className="animate-spin text-gray-500" size={32} />
           ) : (
@@ -98,20 +123,31 @@ const ProfileOverview = () => {
                     </linearGradient>
                   </defs>
                   <CartesianGrid vertical={false} stroke="#404040" />
-                  <XAxis dataKey="date" tick={{ fill: '#a3a3a3', fontSize: 12 }} dy={10} tickLine={false} axisLine={false} interval={xAxisInterval} />
+
+                  {/* ✨ ÁP DỤNG `interval` VÀO TRỤC X CỦA BIỂU ĐỒ CHÍNH ✨ */}
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fill: '#a3a3a3', fontSize: 12 }} 
+                    dy={10} 
+                    tickLine={false} 
+                    axisLine={false} 
+                    interval={xAxisInterval} // Prop quan trọng nhất
+                  />
+
                   <YAxis tickFormatter={formatYAxis} tick={{ fill: '#a3a3a3', fontSize: 12 }} tickLine={false} axisLine={false} />
                   <Tooltip content={<CustomTooltip />} cursor={false} position={{ y: 0 }} isAnimationActive={false} />
                   <Area type="monotone" dataKey="value" stroke="#60a5fa" strokeWidth={2} fill="url(#profileOverviewGradient)" activeDot={<CustomActiveDot />} />
-                  {data.length > 20 && ( // Chỉ hiển thị Brush khi có nhiều dữ liệu
+                  
+                  {/* Thanh trượt Brush vẫn giữ nguyên và hiển thị toàn bộ dữ liệu thu nhỏ */}
+                  {data && data.length > 20 && (
                   <Brush 
                     dataKey="date" 
                     height={30} 
                     stroke="#60a5fa"
                     fill="rgba(39, 39, 42, 0.5)"
-                    startIndex={Math.max(0, data.length - 20)} // Mặc định hiển thị 20 điểm cuối
+                    startIndex={Math.max(0, data.length - 20)}
                     endIndex={data.length - 1}
                   >
-                    {/* Biểu đồ nhỏ bên trong Brush */}
                     <AreaChart>
                        <Area dataKey="value" stroke="#818cf8" fill="#818cf8" fillOpacity={0.3} />
                     </AreaChart>

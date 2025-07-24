@@ -1,4 +1,4 @@
-// File: src/app/hooks/useTimeSeriesData.ts (File mới hoặc đặt trong lib)
+// File: src/app/hooks/useTimeSeriesData.ts
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -11,6 +11,9 @@ import {
 } from '@/app/contracts';
 import { type DataPoint } from '@/app/lib/dashboard-types';
 import { Log } from 'viem';
+
+// ✨ THÊM VÀO: Giới hạn số lượng điểm dữ liệu để tránh làm treo trình duyệt
+const MAX_DATA_POINTS = 200; 
 
 interface RawDataPoint { timestamp: bigint; value: bigint; change: bigint; }
 type DecodedDataPointLog = { args: { key?: string; newPoint?: RawDataPoint; } } & Log;
@@ -50,7 +53,20 @@ export function useTimeSeriesData(
         const { newPoint } = (relevantLog as DecodedDataPointLog).args;
         if (newPoint) {
             const formattedNewPoint = formatDataPoint(newPoint, formatDate);
-            setData(prevData => [...prevData.slice(1), formattedNewPoint]);
+            
+            // ✨ --- LOGIC CẬP NHẬT ĐÃ ĐƯỢC SỬA LẠI --- ✨
+            setData(prevData => {
+                // Thêm điểm dữ liệu mới vào cuối mảng
+                const newData = [...prevData, formattedNewPoint];
+                
+                // Nếu mảng vượt quá giới hạn, hãy xóa đi điểm cũ nhất
+                if (newData.length > MAX_DATA_POINTS) {
+                    return newData.slice(newData.length - MAX_DATA_POINTS);
+                }
+                
+                // Nếu chưa, trả về mảng đã được thêm mới
+                return newData;
+            });
         }
       }
     },
