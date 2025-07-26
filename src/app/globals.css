@@ -91,9 +91,9 @@ body {
   border-left-color: #2563eb; /* Màu của bg-blue-600 */
 }
 
-.flex-grow.space-y-4.overflow-y-auto.pr-2.h-64 .chat-bubble-user.self-end.max-w-sm{
+/* .flex-grow.space-y-4.overflow-y-auto.pr-2.h-64 .chat-bubble-user.self-end.max-w-sm{
   min-width: 630px; 
-}
+} */
 
 /* Support Found*/
 .bg-dashed-horizontal {

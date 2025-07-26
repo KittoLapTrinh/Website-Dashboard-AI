@@ -9,21 +9,24 @@ import { useHeartbeatData } from '@/app/hooks/useHeartbeatData';
 import { type DataPoint } from '@/app/lib/dashboard-types';
 const HeartbeatMonitor = () => {
    const { bloodData, tempData, heartData, isLoading, error, refetch } = useHeartbeatData();
-  // Lấy ra giá trị cuối cùng để hiển thị và quyết định màu sắc
-  const lastBloodValue = bloodData[bloodData.length - 1]?.value || 0;
-  const lastTempValue = (tempData[tempData.length - 1]?.value || 0).toFixed(1);
-  const lastHeartValue = heartData[heartData.length - 1]?.value || 0;
 
-  // const WINDOW_SIZE = 30; 
+
+  const WINDOW_SIZE = 60; 
 
   const getLastNItems = (arr: DataPoint[], n: number) => {
     if (!arr || arr.length === 0) return [];
     return arr.slice(Math.max(arr.length - n, 0));
   };
 
-  //  const visibleBloodData = getLastNItems(bloodData, WINDOW_SIZE);
-  // const visibleTempData = getLastNItems(tempData, WINDOW_SIZE);
-  // const visibleHeartData = getLastNItems(heartData, WINDOW_SIZE);
+  const visibleBloodData = getLastNItems(bloodData, WINDOW_SIZE);
+  const visibleTempData = getLastNItems(tempData, WINDOW_SIZE);
+  const visibleHeartData = getLastNItems(heartData, WINDOW_SIZE);
+
+    // Lấy ra giá trị cuối cùng để hiển thị và quyết định màu sắc
+  const lastBloodValue = bloodData[bloodData.length - 1]?.value || 0;
+  const lastTempValue = (tempData[tempData.length - 1]?.value || 0).toFixed(1);
+  const lastHeartValue = heartData[heartData.length - 1]?.value || 0;
+
 
   // HÀM XÁC ĐỊNH MÀU SẮC DỰA TRÊN GIÁ TRỊ
   const getHeartStatusColor = (rate: number) => {
@@ -58,7 +61,7 @@ const HeartbeatMonitor = () => {
               title="Blood Status"
               value={`${lastBloodValue}/70`}
               icon={<HeartPulse size={24} />}
-              data={bloodData}
+              data={visibleBloodData}
               statusColor={getHeartStatusColor(lastBloodValue)}
               endValueDisplay={
                 <div className="absolute inset-0 flex justify-end items-center pr-4">
@@ -75,7 +78,7 @@ const HeartbeatMonitor = () => {
               title="Temperature"
               value={`${lastTempValue}`}
               icon={<Thermometer size={24} />}
-              data={tempData}
+              data={visibleTempData}
               statusColor={getTempStatusColor(parseFloat(lastTempValue))}
               endValueDisplay={
                 <div className="absolute inset-0 flex justify-end items-center">
@@ -91,7 +94,7 @@ const HeartbeatMonitor = () => {
               title="Heart Rate"
               value={`${lastHeartValue} bpm`}
               icon={<Activity size={24} />}
-              data={heartData}
+              data={visibleHeartData}
               statusColor={getHeartStatusColor(lastHeartValue)}
               endValueDisplay={
                 <div className="absolute inset-0 flex justify-end items-center">

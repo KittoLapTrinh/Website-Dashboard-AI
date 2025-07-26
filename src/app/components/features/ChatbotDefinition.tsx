@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import WidgetCard from '../ui/WidgetCard';
 import { Send, Loader2 } from 'lucide-react';
-
+import TextareaAutosize from 'react-textarea-autosize';
 // Giữ nguyên đường dẫn import của bạn, nhưng đảm bảo nó đúng
 import Chatbot1 from '@/app/assets/image/Chatbot1.png';
 import Chatbot2 from '@/app/assets/image/Chatbot2.png';
@@ -20,9 +20,21 @@ const ChatbotDefinition = () => {
   const [botResponse, setBotResponse] = useState<Message | null>(null);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const [welcomeMessage, setWelcomeMessage] = useState("How can I help you today?");
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+   useEffect(() => {
+    if (messages.length === 0 && !isLoading) {
+      const interval = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * initialBotMessages.length);
+        setWelcomeMessage(initialBotMessages[randomIndex]);
+      }, 4000); 
+
+      return () => clearInterval(interval);
+    }
+  }, [messages, isLoading]);
+
     const initialBotMessages = [
   "How can I help you today?",
   "Ask me anything about this data.",
@@ -159,24 +171,28 @@ const ChatbotDefinition = () => {
           <div className="absolute inset-0 transform sm:-translate-x-[33%] sm:-translate-y-[5%]">
             <Image src={Chatbot1} alt="Chatbot" fill className="object-contain" />
           </div>
-          <div className="chat-bubble-bot absolute top-8 right-0 w-[80%] sm:w-[70%] lg:w-[70%] z-20 inset-0 transform sm:-translate-y-[15%] sm:-translate-x-[-35%]">
+          <div 
+            className={`chat-bubble-bot absolute top-8 right-[-25%] w-[80%] sm:w-[70%] z-20 transition-opacity duration-500
+                        ${messages.length > 0 ? 'opacity-0' : 'opacity-100'}`}
+          >
             <h3 className="font-bold text-white">Chatbot Metanode</h3>
             <p className="text-sm text-gray-300 mt-2 leading-relaxed">
-              {displayMessage}
+              {welcomeMessage}
             </p>
           </div>
+
         </div>
 
         {/* === CỘT PHẢI: Đã được kết nối với state và logic === */}
         <div className="flex flex-col h-full">
           
           {/* ✨ 1. Khu vực hiển thị tin nhắn */}
-          <div className="flex-grow space-y-4 overflow-y-auto pr-2 h-64">
+          <div ref={chatContainerRef}  className="flex flex-col flex-grow space-y-4 overflow-y-auto pr-2 h-64 custom-scrollbar">
             {/* Render các tin nhắn từ state */}
             {messages.map((msg, index) => (
               <div 
                 key={index} 
-                className={msg.role === 'user' ? 'chat-bubble-user self-end min-w-[630] max-w-sm' : 'chat-bubble-bot min-w-[630] max-w-fit'}
+                className={msg.role === 'user' ? 'chat-bubble-user self-end max-w-xl' : 'chat-bubble-bot max-w-xl'}
               >
                 <p className="text-sm text-white">{msg.content}</p>
               </div>
@@ -201,16 +217,14 @@ const ChatbotDefinition = () => {
             </div>
             
             <form onSubmit={handleSendMessage} className="flex items-center gap-x-2">
-              <textarea
-                ref={textareaRef}
+              <TextareaAutosize
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="This technology is really impressive...."
-                // ✨ Bỏ `overflow-hidden` và sửa `rounded`
                 className="flex-grow bg-zinc-800 border border-transparent rounded-2xl px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-white/50 transition-colors resize-none"
-                rows={1}
-                style={{ maxHeight: '140px' }} // Thêm style nội tuyến để CSS biết giới hạn
+                minRows={1}
+                maxRows={3}
                 disabled={isLoading}
               />
               <button 
