@@ -4,6 +4,7 @@ package integrations
 import (
 	"context"
 	"log"
+	"os"
 	"regexp"
 	"strings"
 	"sync"
@@ -32,7 +33,6 @@ type ScrapeSource struct {
 func ScrapeAllJobs() []ScrapedJob {
 	log.Println("--- Starting to scrape jobs from ALL TopCV sources ---")
 	
-	// ✨ DANH SÁCH CÁC NGUỒN DỮ LIỆU ĐÃ ĐƯỢC CẬP NHẬT CHÍNH XÁC ✨
 	sources := []ScrapeSource{
 		{Field: "Blockchain", URL: "https://www.topcv.vn/tim-viec-lam-blockchain?sba=1"},
 		{Field: "AI", URL: "https://www.topcv.vn/tim-viec-lam-ai?type_keyword=1&sba=1"},
@@ -44,6 +44,19 @@ func ScrapeAllJobs() []ScrapedJob {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.Flag("headless", false),
+		chromedp.Flag("disable-gpu", true),
+		chromedp.UserAgent(`Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36`),
+		chromedp.Flag("enable-automation", false),
+		chromedp.Flag("disable-extensions", false),
+	)
+	allocCtx, cancelAlloc := chromedp.NewExecAllocator(context.Background(), opts...)
+	defer cancelAlloc()
+
+	browserCtx, cancelBrowser := chromedp.NewContext(allocCtx)
+	defer cancelBrowser()
+
 	for _, source := range sources {
 		wg.Add(1)
 		
@@ -51,12 +64,16 @@ func ScrapeAllJobs() []ScrapedJob {
 			defer wg.Done()
 			
 			log.Printf("Scraping jobs for field: %s from %s", src.Field, src.URL)
-			jobsFromSource := scrapeSingleSource(src)
+			jobsFromSource := scrapeSingleSource(browserCtx, src)
 
 			mu.Lock()
-			allJobs = append(allJobs, jobsFromSource...)
+			if jobsFromSource != nil {
+				allJobs = append(allJobs, jobsFromSource...)
+			}
 			mu.Unlock()
 		}(source)
+
+		time.Sleep(2 * time.Second)
 	}
 	
 	wg.Wait()
@@ -65,40 +82,39 @@ func ScrapeAllJobs() []ScrapedJob {
 	return allJobs
 }
 
-// scrapeSingleSource chịu trách nhiệm quét một URL duy nhất.
-func scrapeSingleSource(source ScrapeSource) []ScrapedJob {
+// scrapeSingleSource chịu trách nhiệm quét một URL duy nhất trong một tab mới.
+func scrapeSingleSource(browserCtx context.Context, source ScrapeSource) []ScrapedJob {
 	var jobs []ScrapedJob
 
-	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", true), // Chạy ẩn để không mở nhiều cửa sổ
-		chromedp.Flag("disable-gpu", true),
-		chromedp.UserAgent(`Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36`),
-		chromedp.Flag("enable-automation", false),
-		chromedp.Flag("disable-extensions", false),
-		chromedp.Flag("disable-blink-features", "AutomationControlled"),
-	)
-	allocCtx, cancelAlloc := chromedp.NewExecAllocator(context.Background(), opts...)
-	defer cancelAlloc()
-
-	ctx, cancel := chromedp.NewContext(allocCtx)
+	ctx, cancel := chromedp.NewContext(browserCtx)
 	defer cancel()
 
-	ctx, cancel = context.WithTimeout(ctx, 60*time.Second)
+	ctx, cancel = context.WithTimeout(ctx, 90*time.Second)
 	defer cancel()
 
 	var nodes []*cdp.Node
+	var screenshotBuf []byte
 
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(source.URL),
+		chromedp.Sleep(8*time.Second),
+		chromedp.FullScreenshot(&screenshotBuf, 90),
 		chromedp.WaitVisible(`div.job-item-search-result`),
 		chromedp.Nodes(`div.job-item-search-result`, &nodes, chromedp.ByQueryAll),
 	)
-
+	
 	if err != nil {
+		fileName := "error_screenshot_" + strings.ReplaceAll(source.Field, " ", "_") + ".png"
+		if err_ss := os.WriteFile(fileName, screenshotBuf, 0o644); err_ss != nil {
+			log.Printf("ERROR: Failed to save screenshot for %s: %v", source.Field, err_ss)
+		} else {
+			log.Printf("SUCCESS: Error screenshot for %s saved to %s", source.Field, fileName)
+		}
 		log.Printf("Failed to scrape source '%s' (%s): %v", source.Field, source.URL, err)
-		return jobs
+		return nil
 	}
-
+	
+	// ✨ BẮT ĐẦU PHẦN CODE ĐÃ ĐƯỢC ĐƯA VÀO ĐÚNG CHỖ ✨
 	for _, node := range nodes {
 		var position, foundation, salaryHTML, location string
 
@@ -117,15 +133,18 @@ func scrapeSingleSource(source ScrapeSource) []ScrapedJob {
 				Foundation:  strings.TrimSpace(foundation),
 				JobPosition: strings.TrimSpace(position),
 				Salary:      cleanSalary,
-				Field:       source.Field, // Gán đúng Field từ nguồn
+				Field:       source.Field,
 				Form:        inferForm(location),
 			}
 			jobs = append(jobs, job)
 		}
 	}
 	return jobs
+	// ✨ KẾT THÚC PHẦN CODE ĐÃ ĐƯỢC ĐƯA VÀO ĐÚNG CHỖ ✨
 }
 
+
+// ✨ HÀM INFERFORM ĐÃ ĐƯỢC ĐƯA VÀO ĐÚNG CHỖ ✨
 // inferForm là hàm helper để suy ra hình thức làm việc từ địa điểm.
 func inferForm(location string) string {
     lowerLoc := strings.ToLower(location)

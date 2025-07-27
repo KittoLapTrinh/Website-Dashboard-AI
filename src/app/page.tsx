@@ -11,6 +11,9 @@ import HeartbeatMonitor from "./components/features/HeartbeatMonitor";
 import CustomerReaction from "./components/features/CustomerReaction";
 import ChatbotDefinition from "./components/features/ChatbotDefinition";
 import LetsConnect from "./components/layout/Footer";
+import DailyContent from "./components/features/DailyContent";
+import AnimateOnScroll  from "./components/helpers/AnimateOnScroll";
+
 export default function HomePage() {
   return (
     // Đây là layout grid chính, chứa TẤT CẢ các widget
@@ -23,46 +26,49 @@ export default function HomePage() {
     >
       
       {/* === HÀNG 1 === */}
-      <div className="lg:col-span-4">
+      <AnimateOnScroll  className="lg:col-span-4" delay={0.1}>
         <TotalViewers />
-      </div>
-      <div className="lg:col-span-8">
+      </AnimateOnScroll >
+      <AnimateOnScroll  className="lg:col-span-8" delay={0.2}>
         <ServiceStatusGrid />
-      </div>
+      </AnimateOnScroll >
 
       {/* === HÀNG 2 === */}
-      <div className="lg:col-span-12">
+      <AnimateOnScroll className="lg:col-span-12" delay={0.1}>
         <ProfileOverview />
-      </div>
+      </AnimateOnScroll>
+      {/* <div className="lg:col-span-12">
+        <DailyContent />
+      </div> */}
 
       {/* === HÀNG 3 === */}
-      <div className="lg:col-span-8">
+      <AnimateOnScroll className="lg:col-span-8" delay={0.1}>
         <RealTimeRecruiting />
-      </div>
-      <div className="lg:col-span-4">
+      </AnimateOnScroll>
+      <AnimateOnScroll className="lg:col-span-4" delay={0.2}>
         <SupportFund />
-      </div>
+      </AnimateOnScroll>
       {/* 2. THÊM HÀNG 4 MỚI */}
       {/* Analytics Chart chiếm 4 cột */}
-      <div className="lg:col-span-4">
+      <AnimateOnScroll className="lg:col-span-4" delay={0.1}>
         <AnalyticsChart />
-      </div>
+      </AnimateOnScroll>
       {/* Heartbeat Monitor chiếm 8 cột */}
-      <div className="lg:col-span-8">
+      <AnimateOnScroll className="lg:col-span-8" delay={0.2}>
         <HeartbeatMonitor />
-      </div>
+      </AnimateOnScroll>
        {/* 2. THÊM HÀNG 5 MỚI */}
       {/* Widget này chiếm toàn bộ 12 cột */}
-      <div className="lg:col-span-12">
+      <AnimateOnScroll className="lg:col-span-12"  delay={0.1}>
         <CustomerReaction />
-      </div>
+      </AnimateOnScroll>
       {/* 2. THÊM HÀNG 6 & 7 */}
-      <div className="lg:col-span-12">
+      <AnimateOnScroll className="lg:col-span-12"  delay={0.1}>
         <ChatbotDefinition />
-      </div>
-      <div className="lg:col-span-12">
+      </AnimateOnScroll>
+      <AnimateOnScroll className="lg:col-span-12"  delay={0.1}>
         <LetsConnect />
-      </div>
+      </AnimateOnScroll>
     </div>
   );
 }

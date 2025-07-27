@@ -5,6 +5,7 @@ import recruitingAbiData from './RecruitingContract-abi.json';
 import supportFundAbiData from './SupportFundContract-abi.json';
 import timeSeriesAbiData from './TimeSeriesContract-abi.json';
 import keyValueAbiData from './KeyValueContract-abi.json';
+import contentAbiData from './ContentContract-abi.json';
 
 
 // --- Facade Contract (Dùng cho các lệnh gọi READ) ---
@@ -35,3 +36,6 @@ export const timeSeriesContractAbi = timeSeriesAbiData;
 // --- Key Value Contract (Dùng để lắng nghe EVENT) ---
 export const keyValueContractAddress = process.env.KEY_VALUE_CONTRACT_ADDRESS as `0x${string}`;
 export const keyValueContractAbi = keyValueAbiData;
+
+export const contentContractAddress = process.env.CONTENT_CONTRACT_ADDRESS as `0x${string}`;
+export const contentContractAbi = contentAbiData;

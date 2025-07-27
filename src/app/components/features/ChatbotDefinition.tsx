@@ -23,6 +23,17 @@ const ChatbotDefinition = () => {
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      // Lấy phần tử DOM của container
+      const container = chatContainerRef.current;
+      // Đặt vị trí cuộn dọc (scrollTop) bằng với chiều cao cuộn tối đa (scrollHeight).
+      // Điều này sẽ ngay lập tức cuộn xuống dưới cùng.
+      container.scrollTop = container.scrollHeight;
+    }
+  }, [messages, isLoading]);
+
     const initialBotMessages = [
   "How can I help you today?",
   "Ask me anything about this data.",
@@ -171,12 +182,12 @@ const ChatbotDefinition = () => {
         <div className="flex flex-col h-full">
           
           {/* ✨ 1. Khu vực hiển thị tin nhắn */}
-          <div className="flex-grow space-y-4 overflow-y-auto pr-2 h-64">
+          <div ref={chatContainerRef}  className="flex flex-col flex-grow space-y-4 overflow-y-auto pr-2 h-64 custom-scrollbar">
             {/* Render các tin nhắn từ state */}
             {messages.map((msg, index) => (
               <div 
                 key={index} 
-                className={msg.role === 'user' ? 'chat-bubble-user self-end min-w-[630] max-w-sm' : 'chat-bubble-bot min-w-[630] max-w-fit'}
+                className={msg.role === 'user' ? 'chat-bubble-user self-end max-w-xl' : 'chat-bubble-bot max-w-xl'}
               >
                 <p className="text-sm text-white">{msg.content}</p>
               </div>

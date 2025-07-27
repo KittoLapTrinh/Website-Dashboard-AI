@@ -1,10 +1,10 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect,useMemo  } from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, XAxis, ReferenceLine } from 'recharts';
 import { ChevronDown, TrendingUp, Loader2 } from 'lucide-react';
 import WidgetCard from '../ui/WidgetCard';
 import { useAnalyticsChartData } from '@/app/hooks/useAnalyticsChartData';
-
+import { type DataPoint } from '@/app/lib/dashboard-types';
 // ✨ ĐÃ XÓA HÀM `generateChartData` KHÔNG CÒN CẦN THIẾT ✨
 
 // Component Tooltip tùy chỉnh để có vị trí chính xác
@@ -49,6 +49,14 @@ const AnalyticsChart = () => {
 
   // Hook này giờ sẽ cung cấp dữ liệu thật và cập nhật liên tục
   const { data, isLoading, error, refetch } = useAnalyticsChartData(activeFilter);
+
+  const WINDOW_SIZE = 150;
+
+  const visibleData = useMemo(() => {
+    if (!data || data.length === 0) return [];
+    // Sử dụng slice để lấy N phần tử cuối cùng của mảng `data`
+    return data.slice(Math.max(data.length - WINDOW_SIZE, 0));
+  }, [data]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -114,7 +122,7 @@ const AnalyticsChart = () => {
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={data} // ✨ SỬ DỤNG DỮ LIỆU THẬT TỪ HOOK ✨
+                data={visibleData} // ✨ SỬ DỤNG DỮ LIỆU THẬT TỪ HOOK ✨
                 margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
               >
                 <defs>

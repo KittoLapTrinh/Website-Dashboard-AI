@@ -1,27 +1,85 @@
-// File: src/app/hooks/useAnalyticsChartData.tsx
 "use client";
-import { useTimeSeriesData } from './useTimeSeriesData';
-import { useCallback } from 'react'; // ✨ 1. IMPORT useCallback
+import { useState, useEffect } from 'react';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
+import { timeSeriesContractAddress, timeSeriesContractAbi } from '@/app/contracts';
+import { type DataPoint } from '@/app/lib/dashboard-types';
+import type { Log } from 'viem';
 
 type TimeFilter = 'Weekly' | 'Monthly' | 'Yearly';
 
-const formatDateLabel = (timestamp: bigint, timeframe: TimeFilter): string => {
-  const date = new Date(Number(timestamp) * 1000);
-  if (timeframe === 'Weekly') return date.toLocaleDateString('en-US', { weekday: 'short' });
-  if (timeframe === 'Monthly') return date.toLocaleDateString('en-US', { day: 'numeric' });
-  return date.toLocaleDateString('en-US', { month: 'short' });
-};
+// Các kiểu dữ liệu thô (giữ nguyên)
+interface RawDataPoint { timestamp: bigint; value: bigint; change: bigint; }
+type DecodedDataPointLog = { args: { key?: string; newPoint?: RawDataPoint; } } & Log;
+
+const MAX_DATA_POINTS = 200;
+
+// Sửa lại hàm format: giữ `date` là `number` (miligiây)
+const formatDataPoint = (point: RawDataPoint): DataPoint => ({
+    date: new Date(Number(point.timestamp) * 1000).toISOString(), 
+    value: Number(point.value),
+    change: Number(point.change),
+});
 
 export function useAnalyticsChartData(filter: TimeFilter) {
-  // ✨ THAY ĐỔI DUY NHẤT Ở ĐÂY ✨
-  // Luôn dùng key "recruitment_activity" bất kể filter là gì,
-  // vì backend đã cập nhật cho cả 3 khung thời gian cùng một lúc.
-  const contractKey = `analytics_${filter}`; // Giữ nguyên key này vì backend đã cập nhật cả 3
+    const [data, setData] = useState<DataPoint[]>([]);
+    const contractKey = `analytics_${filter}`;
 
-  // Phần còn lại của hook không cần thay đổi
-  const formatDate = useCallback((ts: bigint) => {
-    return formatDateLabel(ts, filter);
-  }, [filter]);
+    // Hook useReadContract giờ sẽ là nguồn dữ liệu duy nhất khi tải và filter
+    const { 
+        data: contractData, 
+        isLoading, 
+        isFetching,
+        error, 
+    } = useReadContract({
+        address: timeSeriesContractAddress,
+        abi: timeSeriesContractAbi,
+        functionName: 'getTimeSeriesData',
+        args: [contractKey],
+    });
 
-  return useTimeSeriesData(contractKey, formatDate);
+    // useEffect chính để đồng bộ state `data` với dữ liệu từ contract
+    useEffect(() => {
+        // Khi wagmi trả về dữ liệu mới (sau khi tải lần đầu hoặc sau khi filter),
+        // hãy cập nhật toàn bộ state.
+        if (contractData && Array.isArray(contractData)) {
+            setData((contractData as RawDataPoint[]).map(formatDataPoint));
+        }
+    }, [contractData]); // Chỉ chạy lại khi `contractData` thực sự thay đổi
+    
+    // ✨ XÓA BỎ HOÀN TOÀN `useEffect` GÂY LỖI MẤT DỮ LIỆU ✨
+    // useEffect(() => {
+    //     setData([]);
+    // }, [filter]);
+
+    // Lắng nghe sự kiện để cập nhật real-time
+    useWatchContractEvent({
+        address: timeSeriesContractAddress,
+        abi: timeSeriesContractAbi,
+        eventName: 'DataPointAdded',
+        onLogs(logs) {
+            const relevantLogs = logs.filter(log => (log as DecodedDataPointLog).args.key === contractKey);
+            
+            if (relevantLogs.length > 0) {
+                const newPoints = relevantLogs.map(log => {
+                    const newPointRaw = (log as DecodedDataPointLog).args.newPoint;
+                    return formatDataPoint(newPointRaw!);
+                });
+
+                setData(prevData => {
+                    const combinedData = [...prevData, ...newPoints];
+                    // Logic cửa sổ trượt
+                    if (combinedData.length > MAX_DATA_POINTS) {
+                        return combinedData.slice(combinedData.length - MAX_DATA_POINTS);
+                    }
+                    return combinedData;
+                });
+            }
+        },
+    });
+    
+    // Trạng thái loading sẽ là true khi đang fetch lần đầu HOẶC đang fetch lại do đổi filter
+    // và chưa có dữ liệu nào trong state.
+    const finalIsLoading = (isLoading || isFetching) && data.length === 0;
+
+    return { data, isLoading: finalIsLoading, error };
 }

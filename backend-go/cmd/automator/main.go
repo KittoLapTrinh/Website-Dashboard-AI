@@ -39,6 +39,7 @@ func main() {
 	go automations.StartTimeSeriesUpdates(allContracts.TimeSeries)
 	go automations.StartKeyValueUpdates(allContracts.KeyValue)
 	go automations.StartSupportFundUpdates(allContracts.SupportFund)
+	go automations.StartContentUpdates(allContracts.Content)
 	
 	log.Println("All services are now running in the background.")
 

@@ -63,4 +63,13 @@ export interface TotalViewersData {
   }
 }
 
+export interface ContentItem {
+  id: number;
+  contentType: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  author: string;
+  timestamp: number;
+}
 

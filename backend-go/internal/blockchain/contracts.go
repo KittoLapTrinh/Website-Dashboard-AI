@@ -17,6 +17,7 @@ type AllContracts struct {
 	TimeSeries    *TimeSeriesContract  // ✨ ĐÃ SỬA: Tên đúng là "Blockchain" ✨
 	KeyValue      *KeyValueContract
 	SupportFund   *SupportFundContract
+	Content       *ContentContract
 }
 
 // LoadAllContracts khởi tạo và trả về một struct chứa các instance của tất cả các contract.
@@ -59,6 +60,12 @@ func LoadAllContracts(client *ethclient.Client) (*AllContracts, error) {
 		return nil, fmt.Errorf("failed to instantiate SupportFundContract: %w", err)
 	}
 
+	contentAddr := getContractEnvAddress("CONTENT_CONTRACT_ADDRESS")
+	contentInstance, err := NewContentContract(contentAddr, client)
+	if err != nil {
+		return nil, fmt.Errorf("failed to instantiate ContentContract: %w", err)
+	}
+
 	log.Println("All smart contract instances loaded successfully.")
 
 	return &AllContracts{
@@ -67,6 +74,7 @@ func LoadAllContracts(client *ethclient.Client) (*AllContracts, error) {
 		TimeSeries:    timeSeriesInstance, // ✨ ĐÃ SỬA ✨
 		KeyValue:      keyValueInstance,
 		SupportFund:   supportFundInstance,
+		Content:       contentInstance,
 	}, nil
 }
 
