@@ -1,0 +1,293 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "dayKey",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "iconId",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "count",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "avatarColor",
+								"type": "string"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct DataStructs.FundItem[]",
+						"name": "newItems",
+						"type": "tuple[]"
+					}
+				],
+				"name": "FundItemsUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "fundItemsByDay",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "iconId",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "count",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "avatarColor",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_day",
+						"type": "string"
+					}
+				],
+				"name": "getFundItemsByDay",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "iconId",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "count",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "avatarColor",
+								"type": "string"
+							}
+						],
+						"internalType": "struct DataStructs.FundItem[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_dayKey",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "price",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "iconId",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "count",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "avatarColor",
+								"type": "string"
+							}
+						],
+						"internalType": "struct DataStructs.FundItem[]",
+						"name": "_newItems",
+						"type": "tuple[]"
+					}
+				],
+				"name": "updateFundItemsForDay",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/services/SupportFundContract.sol": "SupportFundContract"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/common/AccessControl.sol": {
+			"keccak256": "0x8f3844c9063d524d04180a6f7acbb50d9e434049ab60ef7acf0b7cc12e19abab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ea8fb050b5d5e96dfa8c584bfec04072d2af25afd8b4bf678464f76fd3c003b2",
+				"dweb:/ipfs/QmfMUFk2VAFjGuJ8d9CqzGZZjDkDMWQkhtYJPL5hg8evkk"
+			]
+		},
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0xd48ac140f2587c8bbffb6c8b922c6fbb64ccd171c26650fab7cb426ec6cb7bf2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b0ae8ace6f3f6abcf5d1bb5d23187a4758ad9e39d85f50bd1c113b336a15e66a",
+				"dweb:/ipfs/QmPDoHhnwYoBXbc9XysGte5VzUwywJJ1Dnj6YeESBC8Lds"
+			]
+		},
+		"contracts/services/SupportFundContract.sol": {
+			"keccak256": "0x0fd4a2839e1043e81d3618ef8f7347dc66fa608accd45d130d7e100659c460b8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://73c1397b9a22206b2eef8fe680f05dd94fc9050b5e7bf78973a984916be682c4",
+				"dweb:/ipfs/QmeyYHb1db6rp1VoTu98inJtzZ2UgbeMifv2ty4S6VGUPd"
+			]
+		}
+	},
+	"version": 1
+}

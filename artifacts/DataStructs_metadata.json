@@ -1,0 +1,48 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [],
+		"devdoc": {
+			"details": "Dùng `library` thay vì `contract` vì nó không có state variable và chỉ chứa định nghĩa.",
+			"kind": "dev",
+			"methods": {},
+			"title": "DataStructs",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"notice": "Thư viện này định nghĩa các cấu trúc dữ liệu chung cho toàn bộ dashboard.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/common/DataStructs.sol": "DataStructs"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0xe7f913856b0d348245b401d1ad9c01be019b7076dbdad92cb6cde73f84d924af",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://8406acd37dd4bbde498b74ed1af884bb2a341005d0c6dcc0a198d8f3174ea73e",
+				"dweb:/ipfs/QmTFPEUDirrWzr2C1FEgM4KVwwdqW9KWeb6AN6bSSQV9GF"
+			]
+		}
+	},
+	"version": 1
+}

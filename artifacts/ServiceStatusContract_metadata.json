@@ -1,0 +1,228 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "index",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum DataStructs.ServiceStatus",
+						"name": "newStatus",
+						"type": "uint8"
+					}
+				],
+				"name": "ServiceStatusUpdated",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "getAllServices",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "title",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "subtitle",
+								"type": "string"
+							},
+							{
+								"internalType": "enum DataStructs.ServiceStatus",
+								"name": "status",
+								"type": "uint8"
+							},
+							{
+								"internalType": "string",
+								"name": "iconId",
+								"type": "string"
+							}
+						],
+						"internalType": "struct DataStructs.Service[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "services",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "title",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "subtitle",
+						"type": "string"
+					},
+					{
+						"internalType": "enum DataStructs.ServiceStatus",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "string",
+						"name": "iconId",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_index",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum DataStructs.ServiceStatus",
+						"name": "_newStatus",
+						"type": "uint8"
+					}
+				],
+				"name": "updateServiceStatus",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/services/ServiceStatusContract.sol": "ServiceStatusContract"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/common/AccessControl.sol": {
+			"keccak256": "0x8f3844c9063d524d04180a6f7acbb50d9e434049ab60ef7acf0b7cc12e19abab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ea8fb050b5d5e96dfa8c584bfec04072d2af25afd8b4bf678464f76fd3c003b2",
+				"dweb:/ipfs/QmfMUFk2VAFjGuJ8d9CqzGZZjDkDMWQkhtYJPL5hg8evkk"
+			]
+		},
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0xd48ac140f2587c8bbffb6c8b922c6fbb64ccd171c26650fab7cb426ec6cb7bf2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b0ae8ace6f3f6abcf5d1bb5d23187a4758ad9e39d85f50bd1c113b336a15e66a",
+				"dweb:/ipfs/QmPDoHhnwYoBXbc9XysGte5VzUwywJJ1Dnj6YeESBC8Lds"
+			]
+		},
+		"contracts/services/ServiceStatusContract.sol": {
+			"keccak256": "0x98dcca1c59cee6c09b7543fd924ba3c99bc0a074f4701f0e1ea2c04a427d2805",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0c43960b5f62a6168bc43a436bf58b0c4563d7ef93722b2aef2bb5afa4c99c34",
+				"dweb:/ipfs/QmQYK9d1EHrSJyHNvdBHigFrQ95gFYqNmgLFEEceZUnWib"
+			]
+		}
+	},
+	"version": 1
+}

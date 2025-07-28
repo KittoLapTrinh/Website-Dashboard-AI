@@ -1,0 +1,79 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "getAllTestimonials",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "quote",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "avatarId",
+								"type": "string"
+							}
+						],
+						"internalType": "struct DataStructs.Testimonial[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/DashboardFacade.sol": "ICustomerReactionContract"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/DashboardFacade.sol": {
+			"keccak256": "0x0db23fe12fdca18bf0c20cec39a90506851561b7e6d50931226ca83e4cdfb86a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://097d8077bcf2191a1b6c9c0f6f7f171741dffb6e98cc1091d063ab2c6581083e",
+				"dweb:/ipfs/QmUcMReag6V8gVc6gyfWQa9AgLzgLF2mv9oK5VuBdmbr87"
+			]
+		},
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0x5cbd8d1dcd66a92620c703f4529dbe11103e813834a1325d778a70e7e106d7a2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1414dc6e223f20edde89394c7c9a3b4a1c7d408b7a0ab425aca6af1ff68b26fe",
+				"dweb:/ipfs/QmX9Wq1Z57ohZDCqGki3Rfvv2WaPkTahs3YKNDrGFzjWcW"
+			]
+		}
+	},
+	"version": 1
+}

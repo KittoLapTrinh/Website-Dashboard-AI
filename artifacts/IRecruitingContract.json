@@ -1,0 +1,112 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"getAllJobs()": "965a79fb"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [],
+			"name": "getAllJobs",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "string",
+							"name": "foundation",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "position",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "field",
+							"type": "string"
+						},
+						{
+							"internalType": "uint256",
+							"name": "salary",
+							"type": "uint256"
+						},
+						{
+							"internalType": "string",
+							"name": "form",
+							"type": "string"
+						},
+						{
+							"internalType": "enum DataStructs.JobTrend",
+							"name": "trend",
+							"type": "uint8"
+						},
+						{
+							"internalType": "string",
+							"name": "iconId",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "salaryText",
+							"type": "string"
+						}
+					],
+					"internalType": "struct DataStructs.Job[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}

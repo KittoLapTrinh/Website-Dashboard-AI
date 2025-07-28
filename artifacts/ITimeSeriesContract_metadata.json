@@ -1,0 +1,90 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					}
+				],
+				"name": "getTimeSeriesData",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "change",
+								"type": "int256"
+							}
+						],
+						"internalType": "struct DataStructs.DataPoint[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/DashboardFacade.sol": "ITimeSeriesContract"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/DashboardFacade.sol": {
+			"keccak256": "0x5e78fed9b8ff51019fdf8d9acc6ff56b416a19631a5092209eac7500af9bfe8c",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://7a687d6353e33211def5825130ea3f5a3866ed5d5c7b244767b142d9e9750719",
+				"dweb:/ipfs/QmTYWoxgYWpif1R99Gsdzr4m5RfemFgzq5wyeNvaewVg92"
+			]
+		},
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0x9f5674b80923875c8841be0e9f9056339833e2b3f7e486dd39475528a94ca142",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://51979a1571fb5ca057b28c7c11717899b7662fdd043404a60041e1810fb431e9",
+				"dweb:/ipfs/QmYQvst8L2Kj9MYhVAYebxTD99qugp2kxvmwzf8rnDTDbC"
+			]
+		}
+	},
+	"version": 1
+}

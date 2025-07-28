@@ -1,0 +1,392 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "key",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "change",
+								"type": "int256"
+							}
+						],
+						"indexed": false,
+						"internalType": "struct DataStructs.DataPoint",
+						"name": "newPoint",
+						"type": "tuple"
+					}
+				],
+				"name": "DataPointAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "key",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newSize",
+						"type": "uint256"
+					}
+				],
+				"name": "TimeSeriesReplaced",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					}
+				],
+				"name": "getTimeSeriesData",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "change",
+								"type": "int256"
+							}
+						],
+						"internalType": "struct DataStructs.DataPoint[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					}
+				],
+				"name": "getTimeSeriesLength",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_startIndex",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_count",
+						"type": "uint256"
+					}
+				],
+				"name": "getTimeSeriesSlice",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "change",
+								"type": "int256"
+							}
+						],
+						"internalType": "struct DataStructs.DataPoint[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "_change",
+						"type": "int256"
+					}
+				],
+				"name": "pushDataPoint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_key",
+						"type": "string"
+					},
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "timestamp",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "value",
+								"type": "uint256"
+							},
+							{
+								"internalType": "int256",
+								"name": "change",
+								"type": "int256"
+							}
+						],
+						"internalType": "struct DataStructs.DataPoint[]",
+						"name": "_newData",
+						"type": "tuple[]"
+					}
+				],
+				"name": "replaceTimeSeries",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "timeSeriesData",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "change",
+						"type": "int256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {
+				"getTimeSeriesData(string)": {
+					"details": "Phù hợp cho các chuỗi dữ liệu nhỏ, có kích thước cố định như Heartbeat Monitor."
+				},
+				"getTimeSeriesLength(string)": {
+					"details": "Dùng cho frontend để tính toán logic phân trang cho các chuỗi dữ liệu lớn."
+				},
+				"getTimeSeriesSlice(string,uint256,uint256)": {
+					"details": "Hàm chính cho việc phân trang, dùng cho Analytics & Profile Overview."
+				},
+				"pushDataPoint(string,uint256,int256)": {
+					"details": "Dùng cho các biểu đồ cần lưu trữ toàn bộ lịch sử như Analytics & Profile Overview."
+				},
+				"replaceTimeSeries(string,(uint256,uint256,int256)[])": {
+					"details": "Dùng cho các biểu đồ chỉ cần hiển thị dữ liệu gần nhất (cửa sổ trượt) như Heartbeat Monitor."
+				}
+			},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"getTimeSeriesData(string)": {
+					"notice": "Lấy toàn bộ dữ liệu của một chuỗi."
+				},
+				"getTimeSeriesLength(string)": {
+					"notice": "Lấy tổng số điểm dữ liệu của một chuỗi."
+				},
+				"getTimeSeriesSlice(string,uint256,uint256)": {
+					"notice": "Lấy một \"lát cắt\" (slice) của dữ liệu từ một chuỗi."
+				},
+				"pushDataPoint(string,uint256,int256)": {
+					"notice": "Thêm một điểm dữ liệu mới vào cuối một chuỗi."
+				},
+				"replaceTimeSeries(string,(uint256,uint256,int256)[])": {
+					"notice": "Thay thế toàn bộ dữ liệu của một chuỗi bằng một bộ dữ liệu mới."
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/services/TimeSeriesContract.sol": "TimeSeriesContract"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/common/AccessControl.sol": {
+			"keccak256": "0x8f3844c9063d524d04180a6f7acbb50d9e434049ab60ef7acf0b7cc12e19abab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ea8fb050b5d5e96dfa8c584bfec04072d2af25afd8b4bf678464f76fd3c003b2",
+				"dweb:/ipfs/QmfMUFk2VAFjGuJ8d9CqzGZZjDkDMWQkhtYJPL5hg8evkk"
+			]
+		},
+		"contracts/common/DataStructs.sol": {
+			"keccak256": "0xd48ac140f2587c8bbffb6c8b922c6fbb64ccd171c26650fab7cb426ec6cb7bf2",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://b0ae8ace6f3f6abcf5d1bb5d23187a4758ad9e39d85f50bd1c113b336a15e66a",
+				"dweb:/ipfs/QmPDoHhnwYoBXbc9XysGte5VzUwywJJ1Dnj6YeESBC8Lds"
+			]
+		},
+		"contracts/services/TimeSeriesContract.sol": {
+			"keccak256": "0x68b9cce89e71e40945555da69cbfd6b7700f4bcdec477474e52d88a103e3b49a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9cea9e9faaf671ee3e23a05bf63c923ee239a5865fdbef9c3e4785459e8118c3",
+				"dweb:/ipfs/QmQ19yzUZoafEMHR9MVuFKYRpVrkK5fYDGtuzCkui3wB3j"
+			]
+		}
+	},
+	"version": 1
+}
